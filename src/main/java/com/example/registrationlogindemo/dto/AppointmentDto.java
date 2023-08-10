@@ -22,7 +22,7 @@ public class AppointmentDto {
     private String reason;
     private Long doctorId;
     private Long userId;
-    private String output;
+    private String status;
     private Doctor selectedDoctor; // Store the selected doctor entity
 
 

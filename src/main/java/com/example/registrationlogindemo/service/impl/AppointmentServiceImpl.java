@@ -1,6 +1,7 @@
 package com.example.registrationlogindemo.service.impl;
 
 import com.example.registrationlogindemo.dto.AppointmentDto;
+import com.example.registrationlogindemo.dto.UserDto;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Doctor;
 import com.example.registrationlogindemo.entity.User;
@@ -79,7 +80,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointmentDto.setAppDate(appointment.getApp_date());
                 appointmentDto.setUserId(appointment.getUserId());
                 appointmentDto.setReason(appointment.getReason());
-                appointmentDto.setOutput(appointment.getOutput());
+                appointmentDto.setStatus(appointment.getStatus());
                 // Populate other properties as needed
                 appointmentDtos.add(appointmentDto);
             }
@@ -88,6 +89,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return Collections.emptyList();
     }
+
 
     @Override
     public List<Appointment> getAppointmentsByPatientId(Long userId) {
@@ -140,6 +142,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
+    @Override
+    public List<AppointmentDto> getAppointmentsBySpecialty(String specialty) {
+        return null;
+    }
+
+
     // Create a helper method to convert List<Appointment> to List<AppointmentDto>
     private List<AppointmentDto> convertToAppointmentDtoList(List<Appointment> appointments) {
         // Implement the conversion logic here
@@ -152,7 +160,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             dto.setAppDate(appointment.getApp_date());
             dto.setUserId(appointment.getUserId());
             dto.setReason(appointment.getReason());
-            dto.setOutput(appointment.getOutput());
+            dto.setStatus(appointment.getStatus());
             // Add dto to the list
             appointmentDtos.add(dto);
         }

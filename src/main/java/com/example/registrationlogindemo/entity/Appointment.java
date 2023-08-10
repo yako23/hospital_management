@@ -36,8 +36,8 @@ public class Appointment {
     @Column(name = "user_id", insertable=false, updatable=false)
     private Long userId;
 
-    @Column(name = "output")
-    private String output;
+    @Column(name = "status", columnDefinition = "varchar(20) default 'ΕΚΚΡΕΜΕΙ'")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", insertable = false, updatable = false)

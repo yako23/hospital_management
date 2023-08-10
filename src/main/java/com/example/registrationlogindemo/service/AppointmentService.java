@@ -25,5 +25,7 @@ public interface AppointmentService {
     List<AppointmentDto> getAppointmentsByUserId(Long userId);
 
     Long findDoctorIdByName(Doctor selectedDoctor);
+
+    List<AppointmentDto> getAppointmentsBySpecialty(String specialty);
 }
 

@@ -1,5 +1,6 @@
 package com.example.registrationlogindemo.service;
 
+import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Doctor;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -12,5 +13,9 @@ public interface DoctorService {
 
     Doctor getDoctorById(Long doctorId);
 
-    Doctor findByUsername(String username);
+    Doctor findByUsername(String email);
+
+    List<Object[]> getAppointmentDetailsByDoctorId(Long id);
+
+    Doctor findByEmail(String email);
 }

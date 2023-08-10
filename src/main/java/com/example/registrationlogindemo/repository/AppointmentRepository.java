@@ -2,8 +2,10 @@ package com.example.registrationlogindemo.repository;
 
 import com.example.registrationlogindemo.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository

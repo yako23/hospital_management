@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Search</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/index}">Αρχική</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/doctor/appointments}">Ραντεβού</a>
+  </div>
+</nav>
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="text-center">Doctor Search</h2>
+        </div>
+        <div class="card-body">
+          <form method="get" th:action="@{/doctors}">
+            <div class="form-group">
+              <label for="specialty">Search by Specialty:</label>
+              <select class="form-control" id="specialty" name="specialty">
+                <option value="" selected>All Specialties</option>
+                <option value="ΠΑΘΟΛΟΓΟΣ">ΠΑΘΟΛΟΓΟΣ</option>
+                <option value="ΟΡΘΟΠΕΔΙΚΟΣ">ΟΡΘΟΠΕΔΙΚΟΣ</option>
+                <option value="ΟΦΘΑΛΜΙΑΤΡΟΣ">ΟΦΘΑΛΜΙΑΤΡΟΣ</option>
+                <option value="ΟΔΟΝΤΙΑΤΡΟΣ">ΟΔΟΝΤΙΑΤΡΟΣ</option>
+                <option value="ΩΡΛ">ΩΡΛ</option>
+                <option value="ΧΕΙΡΟΥΡΓΟΣ">ΧΕΙΡΟΥΡΓΟΣ</option>
+                <option value="ΚΑΡΔΙΟΛΟΓΟΣ">ΚΑΡΔΙΟΛΟΓΟΣ</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h3>All Doctors</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Doctor ID</th>
+          <th>Name</th>
+          <th>Specialty</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through the list of doctors and display them in the table -->
+        <tr th:each="doctor : ${doctors}">
+          <td th:text="${doctor.id}"></td>
+          <td th:text="${doctor.user.firstName + ' ' + doctor.user.lastName}"></td>
+          <td th:text="${doctor.specialty}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Appointments</title>
+</head>
+<body>
+<h2>Your Appointments</h2>
+<table>
+  <tr>
+    <th>Patient First Name</th>
+    <th>Patient Last Name</th>
+    <th>Appointment Date</th>
+    <th>Reason</th>
+    <th>Output</th>
+  </tr>
+  <tr th:each="appointment : ${appointments}">
+    <td th:text="${appointment.user.firstName}"></td>
+    <td th:text="${appointment.user.lastName}"></td>
+    <td th:text="${#dates.format(appointment.appDate, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${appointment.reason}"></td>
+    <td th:text="${appointment.output}"></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Doctor's Appointments</title>
+  <!-- Add your CSS stylesheets or links here -->
+</head>
+<body>
+<h1>Search Doctor's Appointments</h1>
+<form action="/search" method="get">
+  <label for="doctorName">Doctor's Name:</label>
+  <input type="text" id="doctorName" name="doctorName" required>
+  <button type="submit">Search</button>
+</form>
+<!-- Display search results here -->
+<div>
+  <h2>Search Results:</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Appointment Date</th>
+      <th>User ID</th>
+      <th>Reason</th>
+      <th>Output</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="appointment : ${appointments}">
+      <td th:text="${appointment.appDate}"></td>
+      <td th:text="${appointment.userId}"></td>
+      <td th:text="${appointment.reason}"></td>
+      <td th:text="${appointment.output}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

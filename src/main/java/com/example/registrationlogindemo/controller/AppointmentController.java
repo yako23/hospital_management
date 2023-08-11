@@ -9,6 +9,8 @@ import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DoctorService;
 import com.example.registrationlogindemo.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private UserService userService;
     private DoctorService doctorService;
+    private static final Logger logger = LoggerFactory.getLogger(AppointmentController.class);
+
 
     public AppointmentController(AppointmentService appointmentService, UserService userService, DoctorService doctorService) {
         this.appointmentService = appointmentService;
@@ -50,6 +54,45 @@ public class AppointmentController {
         model.addAttribute("doctors", doctors);
         return "booking_form";
     }
+
+    @PostMapping("/appointment/save")
+    public String saveAppointment(@ModelAttribute("appointment") AppointmentDto appointmentDto,
+                                  @RequestParam("userId") Long userId,
+                                  @RequestParam("doctorId") Long doctorId,
+                                  Model model) {
+
+        logger.info("Received appointment data: {}", appointmentDto);
+        logger.info("Received userId: {}", userId);
+        logger.info("Received doctorId: {}", doctorId);
+
+        // Use userId to fetch the User entity (patient)
+        User patient = userService.getUserById(userId);
+
+        Doctor doctor = doctorService.getDoctorById(doctorId);
+
+        // Create an Appointment entity from the DTO
+        Appointment appointment = new Appointment();
+        //appointment.setUserId(userId);
+        //appointment.setDoctor_id(doctorId);
+        appointment.setDoc_specialty(appointmentDto.getDocSpecialty());
+        appointment.setApp_date(appointmentDto.getAppDate());
+        appointment.setReason(appointmentDto.getReason());
+        appointment.setDoctor_id(doctorId);
+        appointment.setUserId(userId);
+        appointment.setStatus("ΕΚΚΡΕΜΕΙ");
+        //appointment.setUser(patient);
+        //.setDoctor(doctor);
+
+        // Save the appointment
+        appointmentService.saveAppointment(appointment);
+
+        // Redirect to a success page or return a success message
+        model.addAttribute("success", true);
+        return "redirect:/appointment";
+    }
+
+
+
 
     // handler method to handle appointment booking form submit request
  /*   @PostMapping("/appointment/save")
@@ -104,6 +147,7 @@ public class AppointmentController {
         }
         return "redirect:/appointment/success";
 }*/
+
 
 
 }

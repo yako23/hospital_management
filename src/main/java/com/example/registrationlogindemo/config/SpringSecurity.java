@@ -41,6 +41,7 @@ public class SpringSecurity {
                                 .requestMatchers("/users").hasAnyAuthority("ADMIN","DOCTOR")
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/booking_form").hasAuthority("PATIENT")
+                                .requestMatchers("/booking_form/**").hasAuthority("PATIENT")
                                 .requestMatchers("/custom-403").permitAll()
                                 .requestMatchers("/users/**").hasAuthority("ADMIN")
                                 .requestMatchers("/users/edit/**").hasAuthority("ADMIN")

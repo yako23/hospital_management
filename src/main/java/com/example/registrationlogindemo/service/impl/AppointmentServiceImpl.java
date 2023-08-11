@@ -101,7 +101,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
-    @Override
+
+    /*@Override
     @Transactional
     public void saveAppointment(AppointmentDto appointmentDto) {
         Appointment appointment = new Appointment();
@@ -117,18 +118,21 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (selectedDoctor != null) {
             appointment.setDoctor_id(selectedDoctor.getId());
         }
-        // Doctor doctor = doctorService.getDoctorById(appointmentDto.getDoctorId());
-        User user = userService.getUserById(appointmentDto.getUserId());
-       // appointment.setDoctor(doctor);
-        appointment.setUserId(appointmentDto.getUserId());
+        // Fetch the user (patient) from the UserRepository using the userId
+        User user = userRepository.findById(appointmentDto.getUserId()).orElse(null);
+        if (user != null) {
+            appointment.setUser(user);
+            appointment.setUserId(user.getId());
+        }
 
         // Save the appointment
         appointmentRepository.save(appointment);
-    }
+    }*/
 
     @Override
+    @Transactional
     public void saveAppointment(Appointment appointment) {
-
+        appointmentRepository.save(appointment);
     }
 
     @Override

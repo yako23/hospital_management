@@ -17,26 +17,24 @@
   <script th:inline="javascript">
     $(document).ready(function () {
       // Listen to the change event of the doctorSpecialty dropdown
-      $("#doctorSpecialty").change(function () {
-        var selectedSpecialty = $(this).val();
-        console.log("Selected Specialty:", selectedSpecialty);
-        $.get("/appointments/getDoctorsBySpecialty", {specialty: selectedSpecialty}, function (data) {
+      $("#docSpecialty").change(function () {
+        var docSpecialty = $(this).val();
+        console.log("Selected Specialty:", docSpecialty);
+        $.get("/appointments/getDoctorsBySpecialty", { specialty: docSpecialty }, function (data) {
           console.log("Data:", data);
-          // Populate the doctorId dropdown with the fetched doctor names
           var doctorIdDropdown = $("#doctorId");
           doctorIdDropdown.empty();
           doctorIdDropdown.append('<option value="" selected disabled>Επιλέξτε γιατρό</option>');
           $.each(data, function (index, doctor) {
             doctorIdDropdown.append('<option value="' + doctor.id + '">' + doctor.user.firstName + ' ' + doctor.user.lastName + '</option>');
           });
-        }).fail(function() {
-          // Clear the doctorId dropdown in case of an error
+        }).fail(function () {
           var doctorIdDropdown = $("#doctorId");
           doctorIdDropdown.empty();
           doctorIdDropdown.append('<option value="" selected disabled>Επιλέξτε ειδικότητα πρώτα</option>');
-
         });
       });
+
     });
   </script>
 
@@ -114,15 +112,16 @@
           <form method="post"
                 role="form"
                 th:action="@{/appointment/save}"
-                th:object="${appointment}"
-          >
+                th:object="${appointment}">
+
             <!--<input class="form-control" type="text" name="userId" value="${userDto.id}"/>-->
             <input  type="hidden" name="userId" th:value="${userId}" />
+
 
             <div class="form-group mb-3">
               <label class="form-label">Ημερομηνία Κράτησης</label>
               <input class="form-control" id="app_date" name="app_date" type="date"
-                     th:field="*{appDate}" th:value="${#dates.format(appointment.appDate, 'yyyy-MM-dd')}" required/>
+                     th:field="*{appDate}" required/>
             </div>
             <div class="form-group mb-3">
               <label class="form-label">Ειδικότητα Γιατρού</label>
@@ -148,6 +147,7 @@
                   <option th:each="doctor : ${doctors}" th:value="${doctor.id}"
                           th:text="${doctor.user.firstName} + ' ' + ${doctor.user.lastName}"></option>
                 </select>
+                <input type="hidden" name="doctorId" th:value="${appointment.doctorId}" />
               </div>
             </div>
             <input type="hidden" name="doctorId" th:value="${appointment.doctorId}" />

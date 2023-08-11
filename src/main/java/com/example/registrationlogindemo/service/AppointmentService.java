@@ -17,7 +17,7 @@ public interface AppointmentService {
 
     Appointment createAppointment(Appointment appointment, Long doctorId, Long userId);
 
-    void saveAppointment(AppointmentDto appointmentDto);
+    //void saveAppointment(AppointmentDto appointmentDto);
 
     void saveAppointment(Appointment appointment); // Add this method to save an Appointment entity
 

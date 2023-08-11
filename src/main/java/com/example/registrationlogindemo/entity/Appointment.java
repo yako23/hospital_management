@@ -30,10 +30,10 @@ public class Appointment {
     @Column(name = "reason")
     private String reason;
 
-    @Column(insertable=false, updatable=false)
+    @Column()
     private Long doctor_id;
 
-    @Column(name = "user_id", insertable=false, updatable=false)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "status", columnDefinition = "varchar(20) default 'ΕΚΚΡΕΜΕΙ'")

@@ -5,13 +5,16 @@ import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DoctorService;
 import com.example.registrationlogindemo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class DoctorController {
     private final AppointmentService appointmentService;
     private final UserService userService;
 
+    @Autowired
     public DoctorController(DoctorService doctorService, AppointmentService appointmentService, UserService userService) {
         this.doctorService = doctorService;
         this.appointmentService = appointmentService;
@@ -38,6 +42,13 @@ public class DoctorController {
         }
         model.addAttribute("doctors", doctors);
         return "doctors"; // The name of the Thymeleaf template for the doctor search page
+    }
+
+    @GetMapping("/getDoctorsBySpecialty")
+    @ResponseBody
+    public List<Doctor> getDoctorsBySpecialty(@RequestParam String specialty) {
+        List<Doctor> doctors = doctorService.getDoctorsBySpecialty(specialty);
+        return doctors;
     }
 
     @GetMapping("/doctor/appointments")

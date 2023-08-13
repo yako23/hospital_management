@@ -48,8 +48,9 @@ public class SpringSecurity {
                                 .requestMatchers("/delete/**").hasAuthority("ADMIN")
                                 .requestMatchers("/doctors").permitAll()
                                 .requestMatchers("/appointment/**").hasAuthority("PATIENT")
-                                .requestMatchers("/doctor/appointments").permitAll()//hasAuthority("DOCTOR")
+                                .requestMatchers("/doctor/appointments").hasAuthority("DOCTOR")
                                 .requestMatchers("/diagnoses/by-doctor").hasAuthority("DOCTOR")
+                                .requestMatchers("/diagnoses/by-appointment/**").hasAuthority("DOCTOR")
                                 .anyRequest().authenticated()
                                 .and()
                                 .exceptionHandling((exceptionHandling) ->

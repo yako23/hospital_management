@@ -18,7 +18,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Doctor findByUserFirstNameAndUserLastName(String docFirstName,String docLastName);
 
     // Define a query method to find appointments by doctorId
-    @Query("SELECT a.app_date, u.firstName, u.lastName, a.reason, a.status " +
+    @Query("SELECT a.app_date, u.firstName, u.lastName, a.reason, a.status,a.id " +
             "FROM Doctor d " +
             "JOIN d.appointments a " +
             "JOIN a.user u " +

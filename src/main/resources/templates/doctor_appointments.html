@@ -51,21 +51,25 @@
     <div class="col-md-12 center-table">
       <table class="table">
         <tr>
+          <th style="color: darkblue;">A/A</th>
+          <th style="color: darkblue;">App Date</th>
           <th style="color: darkblue;">Last Name</th>
           <th style="color: darkblue;">First Name</th>
-          <th style="color: darkblue;">Appointment Date</th>
           <th style="color: darkblue;">Reason</th>
           <th style="color: darkblue;">Status</th>
           <th>Actions</th>
         </tr>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
+          <td th:text="${appointmentDetail[5]}"></td>
+          <td th:text="${appointmentDetail[0]}"></td>
           <td th:text="${appointmentDetail[2]}"></td>
           <td th:text="${appointmentDetail[1]}"></td>
-          <td th:text="${appointmentDetail[0]}"></td>
           <td th:text="${appointmentDetail[3]}"></td>
           <td th:text="${appointmentDetail[4]}"></td>
-          <a th:href="@{/diagnoses/by-appointment/{appointmentId}(appointmentId=${appointment.id})}"
+          <td>
+          <a th:href="@{/diagnoses/by-appointment/{appointmentId}(appointmentId=${appointmentDetail[5]})}"
              class="btn btn-primary">Diagnose</a>
+          </td>
         </tr>
       </table>
     </div>

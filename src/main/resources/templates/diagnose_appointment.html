@@ -27,12 +27,12 @@
 
       <!-- Display appointment details -->
       <p>Appointment ID: <span th:text="${appointment.id}"></span></p>
-      <p>Date: <span th:text="${appointment.date}"></span></p>
-      <p>Patient: <span th:text="${appointment.patient.user.firstName} + ' ' + ${appointment.patient.user.lastName}"></span></p>
+      <p>Date: <span th:text="${appointment.app_date}"></span></p>
+      <p>Patient: <span th:text="${appointment.user.firstName} + ' ' + ${appointment.user.lastName}"></span></p>
 
       <!-- Add your diagnosis form here -->
       <form method="post" th:action="@{/diagnoses/save}" th:object="${diagnosis}">
-        <input type="hidden" name="appointmentId" th:value="${appointment.id}">
+        <input type="hidden" name="appointment.id" th:value="${appointmentId}">
         <div class="form-group">
           <label for="result">Result:</label>
           <textarea class="form-control" id="result" name="result" rows="4"></textarea>
@@ -42,21 +42,23 @@
           <textarea class="form-control" id="treatment" name="treatment" rows="4"></textarea>
         </div>
         <div class="form-group">
-          <label for="medicine">Medicine:</label>
-          <select class="form-control" id="medicine" name="medicineId">
-            <!-- Loop through the list of medicines and display them in the select options -->
-            <option th:each="medicine : ${medicines}" th:value="${medicine.id}" th:text="${medicine.name}"></option>
+          <label for="medicine">Select Medicine:</label>
+          <select class="form-control" id="medicine" name="medicine.id">
+            <option value="">Select a Medicine</option>
+            <th:block th:each="medicine : ${medicines}">
+              <option th:value="${medicine.id}" th:text="${medicine.name}"></option>
+            </th:block>
           </select>
         </div>
-        <div class="form-group">
-          <label for="status">Status:</label>
-          <select class="form-control" id="status" name="diagnosis.status">
+       <!-- <div class="form-group">
+          <label for="status">Change Status:</label>
+          <select class="form-control" id="status" name="appointment.status">
             <option value="ΕΚΚΡΕΜΕΙ">ΕΚΚΡΕΜΕΙ</option>
             <option value="ΟΛΟΚΛΗΡΩΜΕΝΟ">ΟΛΟΚΛΗΡΩΜΕΝΟ</option>
           </select>
-        </div>
+        </div>-->
         <!-- Add other diagnosis fields here -->
-        <input type="hidden" th:field="*{appointment.id}" />
+        <!--<input type="hidden" th:field="*{appointment.id}" />-->
         <button type="submit" class="btn btn-primary">Save Diagnosis</button>
       </form>
     </div>

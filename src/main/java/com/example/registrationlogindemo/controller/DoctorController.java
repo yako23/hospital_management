@@ -83,44 +83,6 @@ public class DoctorController {
         return "doctor_appointments";
     }
 
-    @GetMapping("/diagnoses/by-doctor")
-    public String showDoctorDiagnoses( Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        // Retrieve the doctor's ID from the logged-in user
-        String email = userDetails.getUsername();
-        Doctor doctor = doctorService.findByUsername(email);
 
-        if (doctor == null) {
-            // Handle the case where the doctor is not found
-            return "custom-403";
-        }
-
-        // Add the Doctor's ID to the model
-        model.addAttribute("doctorId", doctor.getId());
-
-        List<Diagnosis> diagnoses = diagnosisService.getDiagnosesByDoctorId(doctor.getId());
-        model.addAttribute("diagnoses", diagnoses);
-
-        return "doctor_diagnoses";
-    }
-
-    @GetMapping("/diagnoses/by-appointment/{appointmentId}")
-    public String diagnoseAppointment(@PathVariable Long appointmentId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        String email = userDetails.getUsername();
-        Doctor doctor = doctorService.findByUsername(email);
-
-        if (doctor == null) {
-            return "custom-403";
-        }
-
-        Appointment appointment = appointmentService.getAppointmentById(appointmentId);
-        if (appointment == null || !appointment.getDoctor().getId().equals(doctor.getId())) {
-            // Handle the case where the appointment is not found or doesn't belong to the doctor
-            return "custom-403";
-        }
-
-        model.addAttribute("medicines", medicineService.getAllMedicines());
-        model.addAttribute("appointment", appointment);
-        return "diagnose_appointment";
-    }
 
 }

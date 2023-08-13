@@ -44,7 +44,7 @@
         <tr th:each="diagnosis : ${diagnoses}">
           <td th:text="${diagnosis.id}"></td>
           <td th:text="${diagnosis.date}"></td>
-          <td th:text="${diagnosis.patient.user.firstName} + ' ' + ${diagnosis.patient.user.lastName}"></td>
+          <td th:text="${diagnosis.patient.firstName} + ' ' + ${diagnosis.patient.lastName}"></td>
           <td th:text="${diagnosis.result}"></td>
           <td th:text="${diagnosis.treatment}"></td>
           <td th:text="${diagnosis.medicine.name}"></td>

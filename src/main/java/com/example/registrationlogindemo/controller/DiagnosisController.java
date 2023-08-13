@@ -3,6 +3,7 @@ package com.example.registrationlogindemo.controller;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Diagnosis;
 import com.example.registrationlogindemo.entity.Doctor;
+import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DiagnosisService;
 import com.example.registrationlogindemo.service.DoctorService;
@@ -32,7 +33,8 @@ public class DiagnosisController {
 
     @PostMapping("/diagnoses/save")
     public String saveDiagnosis(@ModelAttribute("diagnosis") Diagnosis diagnosis,
-                                @RequestParam("appointment.id") Long appointmentId) {
+                                @RequestParam("appointment.id") Long appointmentId,
+                                @AuthenticationPrincipal UserDetails userDetails) {
         // ... Existing code ...
 
         // Get the appointment by its ID
@@ -43,8 +45,20 @@ public class DiagnosisController {
             appointment.setStatus("ΟΛΟΚΛΗΡΩΜΕΝΟ");
             appointmentService.saveAppointment(appointment);
 
+            // Set the appointment's date to the diagnosis
+            diagnosis.setDate(appointment.getApp_date());
+
             // Set the appointment for the diagnosis
             diagnosis.setAppointment(appointment);
+
+            // Get the logged-in doctor's ID
+            String email = userDetails.getUsername();
+            User doctor = doctorService.findByUsername(email).getUser();
+            diagnosis.setDoctor(doctor);
+
+            // Set the patient for the diagnosis
+            User patient = appointment.getUser();
+            diagnosis.setPatient(patient);
 
             // Save the diagnosis
             diagnosisService.saveDiagnosis(diagnosis);

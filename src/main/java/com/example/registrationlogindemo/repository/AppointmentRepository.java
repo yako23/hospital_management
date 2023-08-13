@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
@@ -18,4 +19,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<Appointment> findByUserId(Long userId);
     List<Appointment> findByDoctor_User_FirstNameAndDoctor_User_LastName(String firstName, String lastName);
 
+    Optional<Appointment> findByDiagnosisId(Long diagnosisId);
 }

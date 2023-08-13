@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "app_date")
@@ -46,5 +47,8 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @OneToOne(mappedBy = "appointment")
+    private Diagnosis diagnosis;
 
 }

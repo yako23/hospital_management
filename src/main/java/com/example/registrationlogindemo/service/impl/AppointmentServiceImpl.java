@@ -1,10 +1,8 @@
 package com.example.registrationlogindemo.service.impl;
 
 import com.example.registrationlogindemo.dto.AppointmentDto;
-import com.example.registrationlogindemo.dto.UserDto;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Doctor;
-import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.repository.AppointmentRepository;
 import com.example.registrationlogindemo.repository.DoctorRepository;
 import com.example.registrationlogindemo.repository.UserRepository;
@@ -15,11 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Transactional
@@ -30,6 +24,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final DoctorService doctorService;
+
 
 
     @Autowired
@@ -169,5 +164,20 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentDtos.add(dto);
         }
         return appointmentDtos;
+    }
+
+    public List<Appointment> searchAppointments(String amka, String specialty) {
+        // Implement the logic to search for appointments by specialty and AMKA
+        // Return the list of matching appointments
+        return appointmentRepository.findByUserAmkaAndDoctorSpecialty(amka, specialty);
+    }
+
+    @Override
+    public List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty) {
+        // Implement the logic to search for appointments by date and specialty
+        // You'll need to define a custom query method in your AppointmentRepository
+        // to retrieve the desired data.
+
+        return appointmentRepository.findAppointmentsByDateAndSpecialty(searchDate, specialty);
     }
 }

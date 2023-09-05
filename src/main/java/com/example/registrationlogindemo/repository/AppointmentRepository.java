@@ -3,9 +3,11 @@ package com.example.registrationlogindemo.repository;
 import com.example.registrationlogindemo.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +22,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<Appointment> findByDoctor_User_FirstNameAndDoctor_User_LastName(String firstName, String lastName);
 
     Optional<Appointment> findByDiagnosisId(Long diagnosisId);
+    List<Appointment> findByUserAmkaAndDoctorSpecialty(String amka, String specialty);
+
+    @Query("SELECT a.app_date, u.firstName, u.lastName, a.reason, a.status, a.id " +
+            "FROM Appointment a " +
+            "JOIN a.user u " +
+            "WHERE a.app_date = :searchDate " +
+            "AND u.doc_specialty = :specialty")
+    List<Object[]> findAppointmentsByDateAndSpecialty(@Param("searchDate") Date searchDate,
+                                                      @Param("specialty") String specialty);
+
 }

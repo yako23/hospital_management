@@ -1,9 +1,9 @@
 package com.example.registrationlogindemo.controller;
 
 import com.example.registrationlogindemo.entity.Appointment;
-import com.example.registrationlogindemo.entity.Diagnosis;
 import com.example.registrationlogindemo.entity.Doctor;
 import com.example.registrationlogindemo.entity.User;
+import com.example.registrationlogindemo.repository.AppointmentRepository;
 import com.example.registrationlogindemo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,14 +23,16 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final AppointmentService appointmentService;
+    private final AppointmentRepository appointmentRepository;
     private final UserService userService;
     private final DiagnosisService diagnosisService;
     private final MedicineService medicineService;
 
     @Autowired
-    public DoctorController(DoctorService doctorService, AppointmentService appointmentService, UserService userService, DiagnosisService diagnosisService, MedicineService medicineService) {
+    public DoctorController(DoctorService doctorService, AppointmentService appointmentService, AppointmentRepository appointmentRepository, UserService userService, DiagnosisService diagnosisService, MedicineService medicineService) {
         this.doctorService = doctorService;
         this.appointmentService = appointmentService;
+        this.appointmentRepository = appointmentRepository;
         this.userService = userService;
         this.diagnosisService = diagnosisService;
         this.medicineService = medicineService;
@@ -83,6 +87,80 @@ public class DoctorController {
         return "doctor_appointments";
     }
 
+    @GetMapping("/doctor/search-history")
+    public String searchAppointments(@RequestParam(name = "amka", required = false) String amka,
+                                     Model model,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
 
+
+        // Check if the user is a doctor
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+
+        String email = userDetails.getUsername();
+        Doctor doctor = doctorService.findByUsername(email);
+
+        if (doctor == null) {
+            return "custom-403";
+        }
+
+        // Get the specialty of the doctor
+        String specialty = doctor.getSpecialty();
+
+        // If amka is provided, perform the search
+        if (amka != null && !amka.isEmpty()) {
+            List<Appointment> appointments = appointmentService.searchAppointments(amka, specialty);
+            model.addAttribute("appointments", appointments);
+        }
+
+        model.addAttribute("doctorSpecialty", specialty);
+
+        // Retrieve the appointments based on specialty and AMKA
+        /*List<Appointment> appointments = appointmentService.searchAppointments(amka, specialty);
+
+        // Pass the search results to the template
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("doctor", doctor);*/
+
+        return "search_patient_history";
+    }
+
+    @GetMapping("/doctor/appointments/search")
+    public String searchAppointmentsByDate(@RequestParam("searchDate") String searchDateStr,
+                                           Model model,
+                                           @AuthenticationPrincipal UserDetails userDetails) {
+        // Check if the user is a doctor
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+
+        String email = userDetails.getUsername();
+        Doctor doctor = doctorService.findByUsername(email);
+
+        if (doctor == null) {
+            return "custom-403";
+        }
+
+        // Get the specialty of the doctor
+        String specialty = doctor.getSpecialty();
+
+        // Convert the searchDateStr to a java.util.Date
+        Date searchDate = null;
+        try {
+            searchDate = new SimpleDateFormat("yyyy-MM-dd").parse(searchDateStr);
+        } catch (ParseException e) {
+            // Handle the parsing error, e.g., show an error message to the user
+        }
+
+        // Retrieve the appointments for the entered date and specialty
+        List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
+
+        model.addAttribute("appointmentDetails", appointmentDetails);
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("userId", doctor.getUser().getId());
+
+        return "doctor_appointments";
+    }
 
 }

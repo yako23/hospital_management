@@ -4,6 +4,8 @@ import com.example.registrationlogindemo.dto.AppointmentDto;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Doctor;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface AppointmentService {
@@ -27,5 +29,9 @@ public interface AppointmentService {
     Long findDoctorIdByName(Doctor selectedDoctor);
 
     List<AppointmentDto> getAppointmentsBySpecialty(String specialty);
+
+    List<Appointment> searchAppointments(String amka, String specialty);
+    List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty);
+
 }
 

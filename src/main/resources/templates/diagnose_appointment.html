@@ -50,13 +50,20 @@
             </th:block>
           </select>
         </div>
-       <!-- <div class="form-group">
-          <label for="status">Change Status:</label>
-          <select class="form-control" id="status" name="appointment.status">
-            <option value="ΕΚΚΡΕΜΕΙ">ΕΚΚΡΕΜΕΙ</option>
-            <option value="ΟΛΟΚΛΗΡΩΜΕΝΟ">ΟΛΟΚΛΗΡΩΜΕΝΟ</option>
-          </select>
-        </div>-->
+
+        <!-- File Upload Field for Doctor -->
+        <form th:action="@{/diagnoses/uploadFile}" method="post" enctype="multipart/form-data">
+          <input type="file" name="file" accept=".pdf">
+          <input type="submit" value="Upload PDF">
+        </form>
+
+        <!-- <div class="form-group">
+           <label for="status">Change Status:</label>
+           <select class="form-control" id="status" name="appointment.status">
+             <option value="ΕΚΚΡΕΜΕΙ">ΕΚΚΡΕΜΕΙ</option>
+             <option value="ΟΛΟΚΛΗΡΩΜΕΝΟ">ΟΛΟΚΛΗΡΩΜΕΝΟ</option>
+           </select>
+         </div>-->
         <!-- Add other diagnosis fields here -->
         <!--<input type="hidden" th:field="*{appointment.id}" />-->
         <button type="submit" class="btn btn-primary">Save Diagnosis</button>

@@ -14,4 +14,7 @@ public interface DiagnosisService {
     Optional<Diagnosis> getDiagnosisById(Long id);
 
     List<Diagnosis> getDiagnosesByDoctorId(Long doctorId);
+
+    List<Diagnosis> getDiagnosesByPatientEmail(String email);
+    List<Diagnosis> getDiagnosesByPatientId(Long patientId);
 }

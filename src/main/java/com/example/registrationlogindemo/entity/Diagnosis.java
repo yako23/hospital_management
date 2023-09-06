@@ -26,6 +26,9 @@ public class Diagnosis {
     @Column(name = "treatment")
     private String treatment;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
     @OneToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;

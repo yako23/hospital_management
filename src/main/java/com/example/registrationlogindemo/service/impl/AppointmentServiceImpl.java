@@ -180,4 +180,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointmentRepository.findAppointmentsByDateAndSpecialty(searchDate, specialty);
     }
+
+    @Override
+    public List<Appointment> getAppointmentsByPatientEmail(String email) {
+        return appointmentRepository.findByUserEmail(email);
+    }
+
+    @Override
+    public void deleteAppointment(Long id) {
+        appointmentRepository.deleteById(id);
+    }
 }

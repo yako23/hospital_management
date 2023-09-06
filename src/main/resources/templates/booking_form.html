@@ -43,9 +43,16 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/index}">Αρχική</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/appointment}">Νέο Ραντεβού</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/mybookings}">Τα Ραντεβού μου</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/diagnoses/by-patient}">Οι Διαγνώσεις μου</a>
+  </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="nav nav-pills">
         <li class="nav-item">

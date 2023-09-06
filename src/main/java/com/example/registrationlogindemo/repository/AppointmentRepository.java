@@ -32,4 +32,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<Object[]> findAppointmentsByDateAndSpecialty(@Param("searchDate") Date searchDate,
                                                       @Param("specialty") String specialty);
 
+    List<Appointment> findByUserEmail(String email);
+
+    void deleteById(Long id);
 }

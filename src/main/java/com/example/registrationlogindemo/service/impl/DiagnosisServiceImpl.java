@@ -36,4 +36,13 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         return diagnosisRepository.findByDoctorId(doctorId);
     }
 
+    @Override
+    public List<Diagnosis> getDiagnosesByPatientEmail(String email) {
+        return diagnosisRepository.findByPatientEmail(email);
+    }
+
+    @Override
+    public List<Diagnosis> getDiagnosesByPatientId(Long patientId) {
+        return diagnosisRepository.findByPatientId(patientId);
+    }
 }

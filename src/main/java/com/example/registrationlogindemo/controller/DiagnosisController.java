@@ -13,7 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -106,4 +112,29 @@ public class DiagnosisController {
         model.addAttribute("appointment", appointment);
         return "diagnose_appointment";
     }
+
+    /*@PostMapping("/uploadFile")
+    public String uploadFile(@RequestParam("file") MultipartFile file,
+                             @RequestParam("diagnosisId") Long diagnosisId,
+                             RedirectAttributes redirectAttributes) {
+
+        // Handle file upload and storage here, generate a file URL
+        try {
+            String storagePath = "C:\\Users\\Yannis\\Desktop";
+            Path filePath = Paths.get(storagePath + uniqueFilename);
+            Files.write(filePath, file.getBytes());
+        } catch (IOException e) {
+            // Handle the exception, e.g., log it or return an error message
+        }
+
+        // Update the Diagnosis object with the file URL
+        Diagnosis diagnosis = diagnosisService.getDiagnosisById(diagnosisId);
+        diagnosis.setFileUrl(fileUrl);
+
+        // Save the updated Diagnosis object
+        diagnosisService.saveDiagnosis(diagnosis);
+
+        redirectAttributes.addFlashAttribute("message", "File uploaded successfully.");
+        return "redirect:/diagnoses";
+    }*/
 }

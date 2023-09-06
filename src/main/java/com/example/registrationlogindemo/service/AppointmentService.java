@@ -33,5 +33,8 @@ public interface AppointmentService {
     List<Appointment> searchAppointments(String amka, String specialty);
     List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty);
 
+    List<Appointment> getAppointmentsByPatientEmail(String email);
+
+    void deleteAppointment(Long id);
 }
 

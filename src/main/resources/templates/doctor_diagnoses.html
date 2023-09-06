@@ -37,6 +37,7 @@
           <th>Result</th>
           <th>Treatment</th>
           <th>Medicine</th>
+          <th>File</th>
         </tr>
         </thead>
         <tbody>
@@ -48,6 +49,10 @@
           <td th:text="${diagnosis.result}"></td>
           <td th:text="${diagnosis.treatment}"></td>
           <td th:text="${diagnosis.medicine.name}"></td>
+          <td>
+            <!-- Check if a file is uploaded for this diagnosis -->
+            <a th:if="${diagnosis.fileUrl != null}" th:href="${diagnosis.fileUrl}" target="_blank" class="btn btn-primary">Open File</a>
+          </td>
         </tr>
         </tbody>
       </table>

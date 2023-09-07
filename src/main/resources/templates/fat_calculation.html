@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        .result-box {
+            background-color: #ADD8E6 ; /* Light Blue color */
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            /*border: 2px solid blue; !* Set the border to create a blue frame *!
+            padding: 10px; !* Add padding to the frame *!
+            margin-top: 20px; !* Adjust the top margin to separate it from other elements *!
+*/        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/index}">Αρχική</a>
+    </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/appointment}">Νέο Ραντεβού</a>
+    </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/mybookings}">Τα Ραντεβού μου</a>
+    </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/diagnoses/by-patient}">Οι Διαγνώσεις μου</a>
+    </div>
+    <div class="container-fluid dropdown">
+        <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Εφαρμογές Υγείας & Ευεξίας
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" th:href="@{/user_home}">Υπολογισμός ΔΜΣ</a>
+            <a class="dropdown-item" th:href="@{/ideal_weight}">Υπολογισμός Ιδανικού Βάρους</a>
+            <a class="dropdown-item" th:href="@{/fat_calculation}">Υπολογισμός Λίπους</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+<h1>Υπολογισμός Λίπους Σώματος</h1>
+
+<form id="bodyFatForm">
+    <label for="sex">Φύλο:</label>
+    <select id="sex" name="sex">
+        <option value="male">Άνδρας</option>
+        <option value="female">Γυναίκα</option>
+    </select><br><br>
+
+    <label for="height">Ύψος (cm):</label>
+    <input type="number" id="height" name="height" required><br><br>
+
+    <label for="waist">Περιφέρεια μέσης  (cm):</label>
+    <input type="number" id="waist" name="waist" required><br><br>
+
+    <label for="hip">Περιφέρεια ισχίου (cm):</label>
+    <input type="number" id="hip" name="hip" required><br><br>
+
+    <label for="neck">Περιφέρεια λαιμού (cm):</label>
+    <input type="number" id="neck" name="neck" required><br><br>
+
+    <button type="button" onclick="calculateBodyFat()">Υπολογισμός</button><br><br>
+
+
+    <div class="result-box" style="display: none;">
+        <div id="result"></div>
+        <p class="result-message"></p>
+    </div>
+
+</form>
+</div>
+<script>
+    function calculateBodyFat() {
+        // Get user input
+        var sex = document.getElementById("sex").value;
+        var height = parseFloat(document.getElementById("height").value);
+        var waist = parseFloat(document.getElementById("waist").value);
+        var hip = parseFloat(document.getElementById("hip").value);
+        var neck = parseFloat(document.getElementById("neck").value);
+
+        if (!sex || isNaN(height) || isNaN(waist) || isNaN(hip) || isNaN(neck)) {
+            alert("Παρακαλώ συμπληρώστε όλα τα πεδία με έγκυρες τιμές!");
+            return;
+        }
+        // Calculate body fat percentage based on sex
+        var bodyFat;
+        if (sex === "male") {
+            bodyFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
+        } else {
+            bodyFat = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+        }
+
+        // Display result
+        var resultElement = document.getElementById("result");
+        var categoryMessage = getCategoryMessage(sex, bodyFat);
+
+        // Display result
+        var messageBox = document.querySelector(".result-box");
+        messageBox.style.display = "block"; // Show the message box
+        resultElement.innerHTML = "Το ποσοστό λίπους σας είναι: " + bodyFat.toFixed(2) + "%<br>" + categoryMessage;
+    }
+
+    function getCategoryMessage(sex, bodyFat) {
+        if (sex === "male") {
+            if (bodyFat >= 2 && bodyFat <= 5) {
+                return "Κατηγορία: Απαραίτητο λίπος (2-5%)";
+            } else if (bodyFat >= 6 && bodyFat <= 13) {
+                return "Κατηγορία: Ποσοστό λίπους αθλητών (6-13%)";
+            } else if (bodyFat >= 14 && bodyFat <= 17) {
+                return "Κατηγορία: Υγιές ποσοστό λίπους (14-17%)";
+            } else if (bodyFat >= 18 && bodyFat <= 25) {
+                return "Κατηγορία: Αποδεκτό ποσοστό λίπους (18-25%)";
+            } else {
+                return "Κατηγορία: Παχυσαρκία (>25%)";
+            }
+        } else {
+            if (bodyFat >= 12 && bodyFat <= 15) {
+                return "Κατηγορία: Απαραίτητο λίπος (12-15%)";
+            } else if (bodyFat >= 16 && bodyFat <= 20) {
+                return "Κατηγορία: Ποσοστό λίπους αθλητών (16-20%)";
+            } else if (bodyFat >= 21 && bodyFat <= 24) {
+                return "Κατηγορία: Υγιές ποσοστό λίπους (21-24%)";
+            } else if (bodyFat >= 25 && bodyFat <= 31) {
+                return "Κατηγορία: Αποδεκτό ποσοστό λίπους (25-31%)";
+            } else {
+                return "Κατηγορία: Παχυσαρκία (>31%)";
+            }
+        }
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

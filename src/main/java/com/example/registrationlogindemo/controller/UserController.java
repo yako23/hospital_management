@@ -100,4 +100,13 @@ public class UserController {
     public String calculator(Model model) {
         return "user_home";
     }
+
+    @GetMapping("/ideal_weight")
+    public String calculator2(Model model) {
+        return "ideal_weight";
+    }
+    @GetMapping("/fat_calculation")
+    public String calculator3(Model model) {
+        return "fat_calculation";
+    }
 }

@@ -7,60 +7,138 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+  <style>
+    /* Center the form and its contents */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    #idealWeightForm {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .message-box {
+      background-color: #ADD8E6; /* Blue color */
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      text-align: center;
+    }
+
+    .additional-message {
+      margin-top: 20px;
+      font-style: italic;
+      color: red;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/index}">Αρχική</a>
   </div>
   <div class="container-fluid">
-    <a class="navbar-brand" th:href="@{/doctor/appointments}">Ραντεβού</a>
+    <a class="navbar-brand" th:href="@{/appointment}">Νέο Ραντεβού</a>
   </div>
   <div class="container-fluid">
-    <a class="navbar-brand" th:href="@{/diagnoses/by-doctor}">Οι Διαγνώσεις μου</a>
+    <a class="navbar-brand" th:href="@{/mybookings}">Τα Ραντεβού μου</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/diagnoses/by-patient}">Οι Διαγνώσεις μου</a>
+  </div>
+  <div class="container-fluid dropdown">
+    <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Εφαρμογές Υγείας & Ευεξίας
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a class="dropdown-item" th:href="@{/user_home}">Υπολογισμός ΔΜΣ</a>
+      <a class="dropdown-item" th:href="@{/ideal_weight}">Υπολογισμός Ιδανικού Βάρους</a>
+      <a class="dropdown-item" th:href="@{/fat_calculation}">Υπολογισμός Λίπους</a>
+    </div>
   </div>
 </nav>
 <br/><br/>
-<h1>Ideal Weight Calculator</h1>
+<div class="container">
+      <h1 class="mt-5">Υπολογισμός Ιδανικού Βάρους</h1>
 <form id="idealWeightForm">
-  <label for="sex">Sex:</label>
-  <input type="radio" id="male" name="sex" value="male">
-  <label for="male">Male</label>
-  <input type="radio" id="female" name="sex" value="female">
-  <label for="female">Female</label><br><br>
-
-  <label for="height">Height (in centimeters):</label>
+  <label for="height">Ύψος (cm):</label>
   <input type="number" id="height" name="height" required><br><br>
 
-  <button type="button" onclick="calculateIdealWeight()">Calculate Ideal Weight</button>
+  <label for="sex">Φύλο:</label>
+  <select id="sex" name="sex" required>
+    <option value="male">Άνδρας</option>
+    <option value="female">Γυναίκα</option>
+  </select><br><br>
+
+  <button type="button" onclick="calculateIdealWeight()">Υπολογισμός</button><br><br>
+
+  <div id="result" style="display: none;"></div>
+  <div class="message-box" style="display: none;">
+    <p class="result-message"></p>
+  </div>
+
+  <div class="additional-message" style="display: none;">
+    Φροντίστε να εξισορροπήσετε την διατροφή σας και την σωματική σας άσκηση ώστε να έλθετε σε αυτά τα κιλά.
+    <p class="result-message"></p>
+  </div>
 </form>
-
-<div id="result"></div>
-
+    </div>
 <script>
   function calculateIdealWeight() {
-    // Get the selected sex and height
-    const sex = document.querySelector('input[name="sex"]:checked');
-    const height = parseFloat(document.getElementById("height").value);
+    // Get user input
+    var height = parseFloat(document.getElementById("height").value);
+    var sex = document.getElementById("sex").value;
 
-    // Define ideal weight constants (you can adjust these values)
-    const MALE_HEIGHT_FACTOR = 1.0;
-    const FEMALE_HEIGHT_FACTOR = 0.9;
-
-    // Calculate ideal weight
-    let idealWeight;
-    if (sex && !isNaN(height)) {
-      if (sex.value === "male") {
-        idealWeight = MALE_HEIGHT_FACTOR * height;
-      } else if (sex.value === "female") {
-        idealWeight = FEMALE_HEIGHT_FACTOR * height;
-      }
-
-      document.getElementById("result").innerHTML = `Your ideal weight is: ${idealWeight.toFixed(2)} kg`;
-    } else {
-      document.getElementById("result").innerHTML = "Please select sex and enter height.";
+    if (!sex || isNaN(height)) {
+      alert("Παρακαλώ συμπληρώστε όλα τα πεδία με έγκυρες τιμές!");
+      return;
     }
+    // Calculate ideal weight
+    var idealWeight;
+    if (sex === "male") {
+      idealWeight = height - 100 - ((height - 150) / 4);
+    } else {
+      idealWeight = height - 100 - ((height - 150) / 2.5);
+    }
+
+    // Display result
+    var messageBox = document.querySelector(".message-box");
+    messageBox.style.display = "block"; // Show the message box
+    messageBox.innerHTML = "Το ιδανικό βάρος για εσάς είναι: " + idealWeight.toFixed(2) + " (± 10%) kg";
+
+    var additionalMessage = document.querySelector(".additional-message");
+    additionalMessage.style.display = "block"; // Show the additional message
   }
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

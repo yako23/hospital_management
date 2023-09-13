@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+  <style>
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" th:fragment="header">
@@ -33,58 +44,20 @@
           <a class="nav-link" th:href="@{/doctors}">Αναζήτηση Γιατρών</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">Επικοινωνία</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" th:href="@{/logout}">Αποσύνδεση</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-<br/><br><br>
-<h1>Search History</h1>
+<br/><br/>
+<div class="center">
+  <img src="/images/doctor.jpg" alt="Welcome" width="400" height="400">
+  <h2 th:text="'Καλωσήρθες και πάλι ' + ${userRole} + ' ' + ${userInfo.firstName + ' ' + userInfo.lastName}"></h2> <!-- Assuming ${userFullName} contains the full name (first name + last name) -->
 
-<form th:action="@{/doctor/search-history}" method="get">
-  <input type="hidden" id="specialty" name="specialty" th:value="${doctorSpecialty}" />
-
-  <div>
-    <label for="amka">AMKA:</label>
-    <input type="text" id="amka" name="amka" />
-  </div><br><br>
-  <button type="submit">Search</button>
-</form>
-<br><br>
-<div th:if="${param.logout}">
-  <div class="alert alert-success">You have been logged out.</div>
 </div>
-
-<!-- Display search results in a table -->
-<table class="table table-bordered">
-  <thead>
-  <tr>
-    <th>Appointment ID</th>
-    <th>Date</th>
-    <th>Patient Name</th>
-    <th>Diagnosis Result</th>
-    <th>Treatment</th>
-    <th>Medicine</th>
-    <!-- Add more table headers as needed -->
-  </tr>
-  </thead>
-  <tbody>
-  <!-- Iterate over the list of appointments and display diagnosis data in rows -->
-  <tr th:each="appointment : ${appointments}">
-    <td th:text="${appointment.id}"></td>
-    <td th:text="${appointment.app_date}"></td>
-    <td th:text="${appointment.user.firstName + ' ' + appointment.user.lastName}"></td>
-    <!-- Access diagnosis data for the current appointment -->
-    <td th:text="${appointment.diagnosis.result}"></td>
-    <td th:text="${appointment.diagnosis.treatment}"></td>
-    <td th:text="${appointment.diagnosis.medicine.name}"></td>
-  </tr>
-  <!-- Add a conditional check to display a message if no results are found -->
-  <!--<tr th:if="${appointments.isEmpty()}">
-    <td colspan="6">No results found for the entered AMKA.</td>
-  </tr>-->
-  </tbody>
-</table>
 </body>
 </html>

@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/doctors")
 public class DoctorController {
 
     private final DoctorService doctorService;
@@ -47,7 +46,7 @@ public class DoctorController {
             doctors = doctorService.getAllDoctors();
         }
         model.addAttribute("doctors", doctors);
-        return "doctors"; // The name of the Thymeleaf template for the doctor search page
+        return "doctors";
     }
 
     @GetMapping("/getDoctorsBySpecialty")
@@ -58,18 +57,15 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/appointments")
-    public String viewDoctorAppointments(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String viewDoctorAppointments(Model model,
+                                         @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
-            // Handle the case where the user is not authenticated
-            // You can return an error view or redirect to a login page
             return "redirect:/login";
         }
         String email = userDetails.getUsername();
         Doctor doctor = doctorService.findByUsername(email);
         if (doctor == null) {
-            // Handle the case where the doctor is not found
-            // You can return an error view or redirect to an appropriate page
-            // For example: model.addAttribute("errorMessage", "Doctor not found.");
+            model.addAttribute("errorMessage", "Doctor not found.");
             return "custom-403";
         }
 

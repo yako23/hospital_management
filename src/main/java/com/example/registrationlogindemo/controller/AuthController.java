@@ -7,14 +7,13 @@ import com.example.registrationlogindemo.repository.DoctorRepository;
 import com.example.registrationlogindemo.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,17 +54,26 @@ public class AuthController {
 
     // handler method to handle register user form submit request
     @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDto user,
+    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+                               @RequestParam("isDoctor") Boolean isDoctor,
                                BindingResult result,
                                Model model){
-        User existing = userService.findByEmail(user.getEmail());
+        User existing = userService.findByEmail(userDto.getEmail());
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
         if (result.hasErrors()) {
-            model.addAttribute("user", user);
+            model.addAttribute("user", userDto);
             return "register";
         }
+
+        // Convert UserDto to User
+        User user = convertUserDtoToUser(userDto);
+
+        // Set the status based on whether the user is a doctor or not
+        String status = isDoctor ? "ΕΚΚΡΕΜΕΙ" : "ΕΝΕΡΓΟΣ";
+        user.setStatus(status);
+
         //save the user
         userService.saveUser(user);
 
@@ -82,6 +90,27 @@ public class AuthController {
 
         model.addAttribute("success", true);
         return "redirect:/register?success";
+    }
+
+    // Helper method to convert UserDto to User
+    private User convertUserDtoToUser(UserDto userDto) {
+        User user = new User();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setAmka(userDto.getAmka());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPhNo(userDto.getPhNo());
+        user.setDoc_specialty(userDto.getDoc_specialty());
+        // Set the isDoctor property based on the selected specialty
+        if (userDto.getDoc_specialty() != null && !userDto.getDoc_specialty().isEmpty()) {
+            user.setIsDoctor(true);
+        } else {
+            user.setIsDoctor(false);
+        }
+        user.setStatus(userDto.getStatus());
+        // Set other properties as needed
+        return user;
     }
 
     @GetMapping("/users")
@@ -130,4 +159,69 @@ public class AuthController {
         return "custom-403";
     }
 
+    @GetMapping("/contact")
+    public String contact(){
+        return "contact";
+    }
+    @GetMapping("/welcome")
+    public String welcome(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Get the user's role from UserDetails (e.g., authorities)
+        String userRole = userDetails.getAuthorities().isEmpty() ? "" : userDetails.getAuthorities().iterator().next().getAuthority();
+
+        String username = userDetails.getUsername();
+        User user = userService.findByEmail(username);
+
+        // Assuming User has properties firstName and lastName
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        UserDto userInfo = new UserDto();
+        userInfo.setFirstName(firstName);
+        userInfo.setLastName(lastName);
+
+        // Add the userRole and userFullName to the model
+        model.addAttribute("userRole", userRole);
+        model.addAttribute("userInfo", userInfo);
+
+        return "welcome_admin";
+    }
+
+    @GetMapping("/welcome/user")
+    public String welcomeUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+
+        String username = userDetails.getUsername();
+        User user = userService.findByEmail(username);
+
+        // Assuming User has properties firstName and lastName
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        UserDto userInfo = new UserDto();
+        userInfo.setFirstName(firstName);
+        userInfo.setLastName(lastName);
+
+        model.addAttribute("userInfo", userInfo);
+
+        return "welcome_user";
+    }
+
+    @GetMapping("/welcome/doctor")
+    public String welcomeDoctor(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Get the user's role from UserDetails (e.g., authorities)
+        String userRole = userDetails.getAuthorities().isEmpty() ? "" : userDetails.getAuthorities().iterator().next().getAuthority();
+
+        String username = userDetails.getUsername();
+        User user = userService.findByEmail(username);
+
+        // Assuming User has properties firstName and lastName
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        UserDto userInfo = new UserDto();
+        userInfo.setFirstName(firstName);
+        userInfo.setLastName(lastName);
+
+        // Add the userRole and userFullName to the model
+        model.addAttribute("userRole", userRole);
+        model.addAttribute("userInfo", userInfo);
+
+        return "welcome_doctor";
+    }
 }

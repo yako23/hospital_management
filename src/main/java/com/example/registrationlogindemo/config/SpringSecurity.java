@@ -30,6 +30,19 @@ public class SpringSecurity {
     private LoginSuccessHandler loginSuccessHandler;
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> web.ignoring()
+                .requestMatchers("/css/**");
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
@@ -38,54 +51,42 @@ public class SpringSecurity {
                     try {
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/users").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/users").hasAuthority("ADMIN")
                                 .requestMatchers("/login").permitAll()
-                                .requestMatchers("/booking_form").hasAuthority("PATIENT")
-                                .requestMatchers("/booking_form/**").hasAuthority("PATIENT")
+                                .requestMatchers("/booking_form").hasAnyAuthority("ADMIN","PATIENT")
+                                .requestMatchers("/booking_form/**").hasAnyAuthority("ADMIN","PATIENT")
                                 .requestMatchers("/custom-403").permitAll()
                                 .requestMatchers("/users/**").hasAuthority("ADMIN")
                                 .requestMatchers("/users/edit/**").hasAuthority("ADMIN")
                                 .requestMatchers("/delete/**").hasAuthority("ADMIN")
                                 .requestMatchers("/doctors").permitAll()
-                                .requestMatchers("/appointment/**").hasAuthority("PATIENT")
-                                .requestMatchers("/doctor/appointments").hasAuthority("DOCTOR")
-                                .requestMatchers("/diagnoses/by-doctor").hasAuthority("DOCTOR")
-                                .requestMatchers("/diagnoses/by-appointment/**").hasAuthority("DOCTOR")
+                                .requestMatchers("/appointment/**").hasAnyAuthority("ADMIN","PATIENT")
+                                .requestMatchers("/doctor/appointments").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/diagnoses/by-doctor").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/diagnoses/by-appointment/{appointmentId}").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/admin/diagnoses").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                                 .and()
                                 .exceptionHandling((exceptionHandling) ->
                                         exceptionHandling
                                                 .accessDeniedPage("/custom-403")
-                ).formLogin(
-                        form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                //.defaultSuccessUrl("/index")
-                                .successHandler(loginSuccessHandler)
-                                .permitAll()
-                ).logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll()
-                );
+                                ).formLogin(
+                                        form -> form
+                                                .loginPage("/login")
+                                                .loginProcessingUrl("/login")
+                                                //.defaultSuccessUrl("/index")
+                                                .successHandler(loginSuccessHandler)
+                                                .permitAll()
+                                ).logout(
+                                        logout -> logout
+                                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                                .permitAll()
+                                );
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
 
                 });
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> web.ignoring()
-                .requestMatchers("/css/**","/js/**");
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
     }
 }

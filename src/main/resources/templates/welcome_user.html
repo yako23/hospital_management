@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Patient Diagnoses</title>
+    <meta charset="UTF-8">
+    <title>Welcome Patient</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+  <style>
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" th:fragment="header">
@@ -55,47 +66,10 @@
 </nav>
 <br /><br />
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12"><br><br>
-      <h2 class="text-center">Diagnoses by Patient</h2>
-      <!-- Display the user's name -->
-      <div class="form-group mb-3">
-        <label for="userName">Patient Name:</label>
-        <div id="userName" th:text="${user.lastName + ' ' + user.firstName}"></div>
+<div class="center">
+  <img src="/images/user.jpg" alt="Welcome" width="800" height="400">
 
-        <div th:if="${param.logout}">
-          <div class="alert alert-success">You have been logged out.</div>
-        </div>
-      <table class="table">
-        <thead>
-        <tr>
-          <th style="color: darkblue;">Date</th>
-          <th style="color: darkblue;">Doctor</th>
-          <th style="color: darkblue;">Doctor's Specialty</th>
-          <th style="color: darkblue;">Result</th>
-          <th style="color: darkblue;">Treatment</th>
-          <th style="color: darkblue;">Medicine</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Loop through the diagnoses and display them in the table -->
-        <tr th:each="diagnosis : ${diagnoses}">
-          <td th:text="${diagnosis.date}"></td>
-          <td th:text="${diagnosis.doctor.firstName} + ' ' + ${diagnosis.doctor.lastName}"></td>
-          <td th:text="${diagnosis.doctor.doc_specialty}"></td>
-          <td th:text="${diagnosis.result}"></td>
-          <td th:text="${diagnosis.treatment}"></td>
-          <td th:text="${diagnosis.medicine.name}"></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <h2 th:text="'Καλωσήρθες και πάλι '  + ' ' + ${userInfo.firstName + ' ' + userInfo.lastName}"></h2>
 </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

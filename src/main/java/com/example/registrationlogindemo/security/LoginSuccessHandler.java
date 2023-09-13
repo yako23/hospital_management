@@ -47,11 +47,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Redirect the user based on their role
         if (roles.contains("ADMIN")) {
-            response.sendRedirect("/users");
+            response.sendRedirect("/welcome");
         } else if (roles.contains("PATIENT")) {
-            response.sendRedirect("/appointment");
+            response.sendRedirect("/welcome/user");
         } else {
-            response.sendRedirect("/doctors");
+            response.sendRedirect("/welcome/doctor");
         }
         } else {
             // Handle the case where user is not found or has no userId

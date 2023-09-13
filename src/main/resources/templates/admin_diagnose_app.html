@@ -18,22 +18,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/welcome/doctor}">Αρχική</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/welcome}">Αρχική</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/doctor/appointments}">Ραντεβού</a>
+          <a class="nav-link" th:href="@{/users}">Όλοι οι Χρήστες</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/diagnoses/by-doctor}">Οι Διαγνώσεις μου</a>
+          <a class="nav-link" th:href="@{/pending-users}">Έγκριση Χρηστών</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/doctor/search-history}">Αναζήτηση Ασθενή</a>
+          <a class="nav-link" th:href="@{/admin_appointments}">Όλα τα Ραντεβού</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/doctors}">Αναζήτηση Γιατρών</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/contact}">Επικοινωνία</a>
+          <a class="nav-link" th:href="@{/admin/diagnoses}">Όλες οι Διαγνώσεις</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" th:href="@{/logout}">Αποσύνδεση</a>
@@ -56,10 +53,13 @@
       <p>Appointment ID: <span th:text="${appointment.id}"></span></p>
       <p>Date: <span th:text="${appointment.app_date}"></span></p>
       <p>Patient: <span th:text="${appointment.user.firstName} + ' ' + ${appointment.user.lastName}"></span></p>
-
+      <p>Doctor Id: <span th:text="${appointment.doctor.id}"></span></p>
       <!-- Add your diagnosis form here -->
-      <form method="post" th:action="@{/diagnoses/save}" th:object="${diagnosis}">
-        <input type="hidden" name="appointment.id" th:value="${appointmentId}">
+      <form method="post" th:action="@{/admin/diagnoses/save}" th:object="${diagnosis}" enctype="multipart/form-data">
+
+      <input type="hidden" name="appointment.id" th:value="${appointmentId}">
+        <input type="hidden" name="doctor.id" th:value="${appointment.doctor.id}">
+        <div th:if="${diagnosisSaved}" class="alert alert-success">Diagnosis saved successfully!</div>
         <div class="form-group">
           <label for="result">Result:</label>
           <textarea class="form-control" id="result" name="result" rows="4"></textarea>
@@ -77,22 +77,18 @@
             </th:block>
           </select>
         </div>
-<br><br>
-        <!-- File Upload Field for Doctor -->
+        <br><br>
+        <!-- Add a file input for uploading PDF or image -->
+        <div class="form-group">
+          <label for="fileUpload">Upload File (PDF or Image):</label>
+          <input type="file" class="form-control-file" id="fileUpload" name="file">
+        </div>
+        <br><br>
+       <!-- &lt;!&ndash; File Upload Field for Doctor &ndash;&gt;
         <form th:action="@{/diagnoses/uploadFile}" method="post" enctype="multipart/form-data">
           <input type="file" name="file" accept=".pdf">
           <input type="submit" value="Upload PDF">
-        </form>
-
-        <!-- <div class="form-group">
-           <label for="status">Change Status:</label>
-           <select class="form-control" id="status" name="appointment.status">
-             <option value="ΕΚΚΡΕΜΕΙ">ΕΚΚΡΕΜΕΙ</option>
-             <option value="ΟΛΟΚΛΗΡΩΜΕΝΟ">ΟΛΟΚΛΗΡΩΜΕΝΟ</option>
-           </select>
-         </div>-->
-        <!-- Add other diagnosis fields here -->
-        <!--<input type="hidden" th:field="*{appointment.id}" />-->
+        </form>-->
         <button type="submit" class="btn btn-primary">Save Diagnosis</button>
       </form>
     </div>

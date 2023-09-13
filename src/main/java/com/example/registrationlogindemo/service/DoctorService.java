@@ -18,4 +18,5 @@ public interface DoctorService {
     List<Object[]> getAppointmentDetailsByDoctorId(Long id);
 
     Doctor findByEmail(String email);
+
 }

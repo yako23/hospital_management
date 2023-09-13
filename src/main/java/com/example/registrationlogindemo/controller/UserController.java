@@ -1,11 +1,13 @@
 package com.example.registrationlogindemo.controller;
 
+import com.example.registrationlogindemo.dto.UserDto;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Diagnosis;
 import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.repository.UserRepository;
 import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DiagnosisService;
+import com.example.registrationlogindemo.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -96,9 +98,9 @@ public class UserController {
         return "patient_diagnoses";
     }
 
-    @GetMapping("/user_home")
+    @GetMapping("/bmi_calculation")
     public String calculator(Model model) {
-        return "user_home";
+        return "bmi_calculation";
     }
 
     @GetMapping("/ideal_weight")
@@ -109,4 +111,10 @@ public class UserController {
     public String calculator3(Model model) {
         return "fat_calculation";
     }
+    @GetMapping("/first_aid")
+    public String firstAid(Model model) {
+        return "first_aid";
+    }
+
+
 }

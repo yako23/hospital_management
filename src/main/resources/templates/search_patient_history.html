@@ -20,6 +20,9 @@
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/doctor/search-history}">Αναζήτηση Ασθενή</a>
   </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/logout}">Αποσύνδεση</a>
+  </div>
 </nav>
 <br/>
 <h1>Search History</h1>
@@ -34,6 +37,9 @@
   <button type="submit">Search</button>
 </form>
 
+<div th:if="${param.logout}">
+  <div class="alert alert-success">You have been logged out.</div>
+</div>
 
 <!-- Display search results in a table -->
 <table class="table table-bordered">

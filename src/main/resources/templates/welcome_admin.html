@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <style>
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/welcome_admin}">Αρχική</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/users}">Όλοι οι Χρήστες</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/pending-users}">Έγκριση Χρηστών</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/admin_appointments}">Όλα τα Ραντεβού</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/admin/diagnoses}">Όλες οι Διαγνώσεις</a>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/logout}">Αποσύνδεση</a>
+  </div>
+</nav>
+<br/><br/>
+<div class="center">
+  <!-- Display the welcome image -->
+  <img src="/images/welcome-admin.png" alt="Welcome" width="400" height="400"> <!-- Update the image path -->
+
+  <!-- Display the welcome message with role and full name -->
+  <h2 th:text="'Καλωσήρθες και πάλι ' + ${userRole} + ' ' + ${userInfo.firstName + ' ' + userInfo.lastName}"></h2> <!-- Assuming ${userFullName} contains the full name (first name + last name) -->
+
+</div>
+</body>
+</html>

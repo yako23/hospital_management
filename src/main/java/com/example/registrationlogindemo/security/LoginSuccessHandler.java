@@ -47,7 +47,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Redirect the user based on their role
         if (roles.contains("ADMIN")) {
-            response.sendRedirect("/users");
+            response.sendRedirect("/welcome");
         } else if (roles.contains("PATIENT")) {
             response.sendRedirect("/appointment");
         } else {

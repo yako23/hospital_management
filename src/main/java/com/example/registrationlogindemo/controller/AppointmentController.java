@@ -11,15 +11,13 @@ import com.example.registrationlogindemo.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -91,7 +89,12 @@ public class AppointmentController {
         return "redirect:/appointment";
     }
 
-
+    @GetMapping("/appointments/getDoctorsBySpecialty")
+    @ResponseBody
+    public List<Doctor> getDoctorsBySpecialty(@RequestParam String specialty) {
+        List<Doctor> doctors = doctorService.getDoctorsBySpecialty(specialty);
+        return doctors;
+    }
 
 
     // handler method to handle appointment booking form submit request

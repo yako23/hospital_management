@@ -26,10 +26,13 @@
       Εφαρμογές Υγείας & Ευεξίας
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a class="dropdown-item" th:href="@{/user_home}">Υπολογισμός ΔΜΣ</a>
+      <a class="dropdown-item" th:href="@{/bmi_calculation}">Υπολογισμός ΔΜΣ</a>
       <a class="dropdown-item" th:href="@{/ideal_weight}">Υπολογισμός Ιδανικού Βάρους</a>
       <a class="dropdown-item" th:href="@{/fat_calculation}">Υπολογισμός Λίπους</a>
     </div>
+  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/logout}">Αποσύνδεση</a>
   </div>
 </nav>
 <br/><br/>
@@ -43,6 +46,9 @@
         <label for="userName">Patient Name:</label>
         <div id="userName" th:text="${user.lastName + ' ' + user.firstName}"></div>
 
+        <div th:if="${param.logout}">
+          <div class="alert alert-success">You have been logged out.</div>
+        </div>
       <table class="table">
         <thead>
         <tr>

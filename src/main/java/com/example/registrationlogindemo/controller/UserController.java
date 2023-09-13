@@ -96,9 +96,9 @@ public class UserController {
         return "patient_diagnoses";
     }
 
-    @GetMapping("/user_home")
+    @GetMapping("/bmi_calculation")
     public String calculator(Model model) {
-        return "user_home";
+        return "bmi_calculation";
     }
 
     @GetMapping("/ideal_weight")

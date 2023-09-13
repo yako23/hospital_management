@@ -18,6 +18,9 @@
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/diagnoses/by-doctor}">Οι Διαγνώσεις μου</a>
   </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/logout}">Αποσύνδεση</a>
+  </div>
 </nav>
 <br/><br/>
 
@@ -57,6 +60,9 @@
         </tbody>
       </table>
     </div>
+  </div>
+  <div th:if="${param.logout}">
+    <div class="alert alert-success">You have been logged out.</div>
   </div>
 </div>
 

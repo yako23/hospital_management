@@ -24,6 +24,9 @@
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/doctors}">Αναζήτηση Γιατρών</a>
   </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/logout}">Αποσύνδεση</a>
+  </div>
 </nav>
 <br/>
 
@@ -54,7 +57,7 @@
   </div>
 </div>
 
-
+<p class="text-center">Principal: [[${#authentication.principal}]]</p>
 <div class="container">
   <div class="row">
     <div class="col-md-12 center-table">
@@ -82,6 +85,9 @@
         </tr>
       </table>
     </div>
+  </div>
+  <div th:if="${param.logout}">
+    <div class="alert alert-success">You have been logged out.</div>
   </div>
 </div>
 </body>

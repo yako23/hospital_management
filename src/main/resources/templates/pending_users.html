@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Users</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">Pending Users</a>
+  </div>
+</nav>
+<br/>
+<div class="container">
+  <h2 class="text-center">Pending Users</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>AMKA</th>
+      <th>Email</th>
+      <th>Specialty</th>
+      <th>Phone Number</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the pending users and display them in the table -->
+    <tr th:each="user : ${pendingUsers}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.lastName}"></td>
+      <td th:text="${user.firstName}"></td>
+      <td th:text="${user.amka}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.doc_specialty}"></td>
+      <td th:text="${user.phNo}"></td>
+      <td th:text="${user.status}"></td>
+      <td>
+        <!-- Check if the user's status is "ΕΚΚΡΕΜΕΙ" and display a button to change the status -->
+        <button th:if="${user.status eq 'ΕΚΚΡΕΜΕΙ'}"
+          th:attr="data-userid=${user.id}"
+                class="btn btn-success change-status-btn"
+                onclick="changeStatus(this,${user.id});">Change Status</button>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  // JavaScript function to change the status for a user
+  function changeStatus(button, userId) {
+    console.log("changeStatus called with userId: " + userId);
+    //const userId = button.getAttribute("data-userid");
+
+    // Send an AJAX request to change the user's status
+
+    fetch(`/admin/change-status/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Add any request body or parameters as needed
+    })
+            .then(response => {
+              console.log("Response received:", response);
+              if (response.ok) {
+                // Update the button text and disable it
+                button.innerText = "Status Changed";
+                button.disabled = true;
+              } else {
+                // Handle the error as needed
+                console.error("Failed to change status");
+              }
+            })
+            .catch(error => {
+              // Handle the error as needed
+              console.error("Error:", error);
+            });
+  }
+</script>
+</body>
+</html>

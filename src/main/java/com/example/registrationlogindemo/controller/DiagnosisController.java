@@ -4,22 +4,18 @@ import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Diagnosis;
 import com.example.registrationlogindemo.entity.Doctor;
 import com.example.registrationlogindemo.entity.User;
+import com.example.registrationlogindemo.repository.UserRepository;
 import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DiagnosisService;
 import com.example.registrationlogindemo.service.DoctorService;
 import com.example.registrationlogindemo.service.MedicineService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -29,12 +25,14 @@ public class DiagnosisController {
     private final DoctorService doctorService;
     private final DiagnosisService diagnosisService;
     private final MedicineService medicineService;
+    private final UserRepository userRepository;
 
-    public DiagnosisController(AppointmentService appointmentService, DoctorService doctorService, DiagnosisService diagnosisService, MedicineService medicineService) {
+    public DiagnosisController(AppointmentService appointmentService, DoctorService doctorService, DiagnosisService diagnosisService, MedicineService medicineService, UserRepository userRepository) {
         this.appointmentService = appointmentService;
         this.doctorService = doctorService;
         this.diagnosisService = diagnosisService;
         this.medicineService = medicineService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/diagnoses/save")
@@ -94,24 +92,27 @@ public class DiagnosisController {
     }
 
     @GetMapping("/diagnoses/by-appointment/{appointmentId}")
-    public String diagnoseAppointment(@PathVariable Long appointmentId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String diagnoseAppointment(@PathVariable Long appointmentId,
+                                      Model model,
+                                      @AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
         Doctor doctor = doctorService.findByUsername(email);
-
         if (doctor == null) {
             return "custom-403";
         }
 
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
-        if (appointment == null || !appointment.getDoctor().getId().equals(doctor.getId())) {
+        /*if (appointment == null || !appointment.getDoctor().getId().equals(doctor.getId())) {
             // Handle the case where the appointment is not found or doesn't belong to the doctor
             return "custom-403";
-        }
+        }*/
 
         model.addAttribute("medicines", medicineService.getAllMedicines());
         model.addAttribute("appointment", appointment);
         return "diagnose_appointment";
     }
+
+
 
     /*@PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file,

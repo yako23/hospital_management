@@ -76,7 +76,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointmentDto.setUserId(appointment.getUserId());
                 appointmentDto.setReason(appointment.getReason());
                 appointmentDto.setStatus(appointment.getStatus());
-                // Populate other properties as needed
                 appointmentDtos.add(appointmentDto);
             }
 
@@ -155,7 +154,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
         for (Appointment appointment : appointments) {
             AppointmentDto dto = new AppointmentDto();
-            // Set fields such as appDate, userId, reason, output, etc.
             dto.setAppDate(appointment.getApp_date());
             dto.setUserId(appointment.getUserId());
             dto.setReason(appointment.getReason());

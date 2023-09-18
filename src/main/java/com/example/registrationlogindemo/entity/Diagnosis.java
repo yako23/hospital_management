@@ -44,4 +44,11 @@ public class Diagnosis {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private User patient;
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (fileUrl == null || id == null) return null;
+
+        return "/diagnosis-photos/" + patient.getId() + "/" + fileUrl;
+    }
 }

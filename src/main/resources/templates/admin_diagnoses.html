@@ -75,7 +75,9 @@
                     <td th:text="${diagnosis.medicine.name}"></td>
                     <td>
                         <!-- Check if a file is uploaded for this diagnosis -->
-                        <a th:if="${diagnosis.fileUrl != null}" th:href="${diagnosis.fileUrl}" target="_blank" class="btn btn-primary">Open File</a>
+                        <div th:if="${diagnosis.fileUrl != null}">
+                            <a th:href="${diagnosis.getPhotosImagePath()}" target="_blank" class="btn btn-primary">Open File</a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

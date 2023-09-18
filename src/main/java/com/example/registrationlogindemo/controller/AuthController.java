@@ -101,15 +101,9 @@ public class AuthController {
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setPhNo(userDto.getPhNo());
+        user.setIsDoctor(userDto.getIsDoctor());
         user.setDoc_specialty(userDto.getDoc_specialty());
-        // Set the isDoctor property based on the selected specialty
-        if (userDto.getDoc_specialty() != null && !userDto.getDoc_specialty().isEmpty()) {
-            user.setIsDoctor(true);
-        } else {
-            user.setIsDoctor(false);
-        }
         user.setStatus(userDto.getStatus());
-        // Set other properties as needed
         return user;
     }
 

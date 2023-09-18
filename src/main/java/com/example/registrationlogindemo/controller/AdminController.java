@@ -17,12 +17,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,7 +160,7 @@ public class AdminController {
     public String saveAdminDiagnosis(@ModelAttribute("diagnosis") Diagnosis diagnosis,
                                      @RequestParam("appointment.id") Long appointmentId,
                                      @AuthenticationPrincipal UserDetails userDetails,
-                                     Model model, @RequestParam("file") MultipartFile file) {
+                                     Model model, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
         // Get the appointment by its ID
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
@@ -178,46 +183,33 @@ public class AdminController {
             User patient = appointment.getUser();
             diagnosis.setPatient(patient);
 
-            model.addAttribute("diagnosisSaved", true);
 
-            try {
-            if (!file.isEmpty()) {
-                // Define the directory where you want to save the file
-                String desktopPath = System.getProperty("user.home") + "/Desktop";
+            if (!multipartFile.isEmpty()) {
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                diagnosis.setFileUrl(fileName);
 
-                // Get the file's original name
-                String fileName = file.getOriginalFilename();
+                String uploadDir = "./diagnosis-photos/" + patient.getId();
+                Path uploadPath = Paths.get(uploadDir);
 
-                // Create the directory if it doesn't exist
-                File directory = new File(desktopPath);
-                if (!directory.exists()) {
-                    directory.mkdirs();
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
                 }
 
-                // Construct the file path
-                String filePath = Paths.get(desktopPath, fileName).toString();
-
-                // Save the file to the specified location
-                File dest = new File(filePath);
-                file.transferTo(dest);
-
-
-                // Set the file name or URL in your diagnosis object
-                diagnosis.setFileUrl(fileName);
-                // Save the diagnosis
-                diagnosisService.saveDiagnosis(diagnosis);
+                try (InputStream inputStream = multipartFile.getInputStream()) {
+                    Path filePath = uploadPath.resolve(fileName);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new IOException("Could not save the uploaded file: " + fileName);
+                }
             } else {
-                // Handle the case where no file was selected
-                // ...
+                // No file provided, set FileUrl to null
+                diagnosis.setFileUrl(null);
             }
-            } catch (IOException e) {
-                // Handle IO exceptions
-                e.printStackTrace(); // For debugging purposes; replace with proper error handling
-            } catch (Exception e) {
-                // Handle other exceptions
-                e.printStackTrace(); // For debugging purposes; replace with proper error handling
-            }
+
+            // Save the diagnosis
+            diagnosisService.saveDiagnosis(diagnosis);
         }
+
         return "redirect:/admin_appointments";
     }
 

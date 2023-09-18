@@ -9,13 +9,20 @@ import com.example.registrationlogindemo.service.AppointmentService;
 import com.example.registrationlogindemo.service.DiagnosisService;
 import com.example.registrationlogindemo.service.DoctorService;
 import com.example.registrationlogindemo.service.MedicineService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Controller
@@ -37,9 +44,9 @@ public class DiagnosisController {
 
     @PostMapping("/diagnoses/save")
     public String saveDiagnosis(@ModelAttribute("diagnosis") Diagnosis diagnosis,
+                                @RequestParam("image") MultipartFile multipartFile,
                                 @RequestParam("appointment.id") Long appointmentId,
-                                @AuthenticationPrincipal UserDetails userDetails) {
-        // ... Existing code ...
+                                @AuthenticationPrincipal UserDetails userDetails) throws IOException{
 
         // Get the appointment by its ID
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
@@ -64,10 +71,37 @@ public class DiagnosisController {
             User patient = appointment.getUser();
             diagnosis.setPatient(patient);
 
-            // Save the diagnosis
-            diagnosisService.saveDiagnosis(diagnosis);
+            if (!multipartFile.isEmpty()) {
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                diagnosis.setFileUrl(fileName);
+
+                // Save the diagnosis
+                Diagnosis savedDiagnosis = diagnosisService.saveDiagnosis(diagnosis);
+
+                String uploadDir = "./diagnosis-photos/" + patient.getId();
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                try (InputStream inputStream = multipartFile.getInputStream()) {
+                    Path filePath = uploadPath.resolve(fileName);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new IOException("Could not save the uploaded file: " + fileName);
+                }
+            } else {
+                // No file provided, set FileUrl to null
+                diagnosis.setFileUrl(null);
+                // Save the diagnosis
+                diagnosisService.saveDiagnosis(diagnosis);
+            }
+
+
         }
 
+           // FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "redirect:/doctor/appointments";
     }
 

@@ -28,7 +28,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -65,7 +67,76 @@ public class AdminController {
         return "admin_appointments";
     }
 
-    @PostMapping("/admin/change-status/{userId}")
+    @PostMapping("/changeUserStatus")
+    @ResponseBody
+    public Map<String, Object> changeUserStatus(@RequestParam("email") String email) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Attempt to find the user by email
+            User user = userService.findByEmail(email);
+
+            if (user != null) {
+                // User found
+                // Update the user's status to "ΕΝΕΡΓΟΣ" or toggle it if it's a boolean
+                String newStatus = user.getStatus().equals("ΕΚΚΡΕΜΕΙ") ? "ΕΝΕΡΓΟΣ" : "ΕΚΚΡΕΜΕΙ";
+                user.setStatus(newStatus);
+               // user.setStatus("ΕΝΕΡΓΟΣ");
+
+                // Save the updated user
+                userService.saveUser(user);
+
+                response.put("success", true);
+            } else {
+                // User not found
+                response.put("success", false);
+                response.put("message", "User not found");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error changing user status");
+        }
+
+        return response;
+    }
+
+
+   /* @PostMapping("/changeUserStatus")
+    @ResponseBody
+    public Map<String, Object> changeUserStatus(@RequestParam("userId") Long userId) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Attempt to find the user by ID
+            Optional<User> userOptional = userService.findById(userId);
+
+            if (userOptional.isPresent()) {
+                // User found
+                User user = userOptional.get();
+
+                // Update the user's status to "ΕΝΕΡΓΟΣ" or toggle it if it's a boolean
+                user.setStatus("ΕΝΕΡΓΟΣ");
+
+                // Save the updated user
+                userService.saveUser(user);
+
+                response.put("success", true);
+            } else {
+                // User not found
+                response.put("success", false);
+                response.put("message", "User not found");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error changing user status");
+        }
+
+        return response;
+    }*/
+
+
+
+    /*@PostMapping("/admin/change-status/{userId}")
     public ResponseEntity<String> changeStatus(@PathVariable Long userId) {
         try {
 
@@ -74,21 +145,9 @@ public class AdminController {
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 // Check the current status and update it accordingly
-               /* if ("ΕΚΚΡΕΜΕΙ".equals(user.getStatus())) {*/
+               *//* if ("ΕΚΚΡΕΜΕΙ".equals(user.getStatus())) {*//*
                     user.setStatus("ΕΝΕΡΓΟΣ");
                     userService.saveUser(user); // Save the updated user
-                    /*// Retrieve the associated user
-                    User user = pendingUser.getUser();
-                    // Update the user's status
-                    userService.updateUserStatusByEmail(pendingUser.getUser().getEmail(), "ΕΝΕΡΓΟΣ");
-
-                    //userService.updateStatus(user.getId(), "ΕΝΕΡΓΟΣ")
-
-                    pendingUserService.savePendingUser(pendingUser,user);
-                    // Delete the user from the PendingUser table
-                    pendingUserService.deleteById(userId);
-                    // Call the common method to update the status in both User and PendingUser tables
-                   // userService.changeUserStatus(userId, "ΕΝΕΡΓΟΣ");*/
 
                     return ResponseEntity.ok("Status changed successfully");
 
@@ -98,7 +157,7 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing status");
         }
-    }
+    }*/
 
     @GetMapping("/pending-users")
     public String showpendingUsers(Model model) {
@@ -213,17 +272,6 @@ public class AdminController {
         return "redirect:/admin_appointments";
     }
 
-   /* @GetMapping("/download/{filename}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-        // Load the file as a Resource (assuming it's stored in a specific directory)
-        Resource resource = fileStorageService.loadFileAsResource(filename);
 
-        // Create a Content-Disposition header
-        String contentDisposition = "inline; filename=\"" + resource.getFilename() + "\"";
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .body(resource);
-    }*/
 
 }

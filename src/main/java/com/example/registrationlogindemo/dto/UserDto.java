@@ -29,4 +29,5 @@ public class UserDto
     private String status;
     @NotEmpty(message = "Ο ΑΜΚΑ δεν πρέπει να είναι κενός!")
     private String amka;
+    private String enable;
 }

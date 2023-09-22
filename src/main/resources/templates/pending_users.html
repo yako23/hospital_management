@@ -73,10 +73,15 @@
       <td th:text="${user.status}"></td>
       <td>
         <!-- Check if the user's status is "ΕΚΚΡΕΜΕΙ" and display a button to change the status -->
-        <button th:if="${user.status eq 'ΕΚΚΡΕΜΕΙ'}"
+        <div th:if="${user.status == 'ΕΚΚΡΕΜΕΙ'}">
+          <button class="btn btn-success" th:data-email="${user.email}" onclick="changeStatus(this)">Change Status</button>
+        </div>
+
+
+        <!--<button th:if="${user.status eq 'ΕΚΚΡΕΜΕΙ'}"
           th:attr="data-userid=${user.id}"
                 class="btn btn-success change-status-btn"
-                onclick="changeStatus(this,${user.id});">Change Status</button>
+                onclick="changeStatus(this,${user.id});">Change Status</button>-->
 
       </td>
     </tr>
@@ -86,6 +91,37 @@
 </div>
 
 <script type="text/javascript">
+  function changeStatus(button) {
+    const userEmail = button.getAttribute('data-email');
+    console.log('Button clicked with email:', userEmail);
+    // Make an AJAX request to change the user's status
+    fetch(`/changeUserStatus?email=${userEmail}`, { // Send email as a parameter
+      method: 'POST', // Use the appropriate HTTP method (POST or PUT) for updating data
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Check the response data to see if the status change was successful
+              if (data.success) {
+                // Update the status in the table (you may need to add an ID or unique class to the status cell)
+                const statusCell = document.querySelector(`[data-user-email="${userEmail}"]`);
+                statusCell.textContent = 'ΕΝΕΡΓΟΣ'; // Change to the new status
+              } else {
+                alert('Status change failed. Please try again.');
+              }
+            })
+            .catch(error => {
+              console.error('Error changing status:', error);
+            });
+  }
+</script>
+
+
+
+<!--<script type="text/javascript">
   // JavaScript function to change the status for a user
   function changeStatus(button, userId) {
     console.log("changeStatus called with userId: " + userId);
@@ -116,6 +152,6 @@
               console.error("Error:", error);
             });
   }
-</script>
+</script>-->
 </body>
 </html>

@@ -120,24 +120,23 @@
                     <div class="form-group mb-3">
                         <label class="form-check-label" style="color: red;">*Τα παρακάτω πεδία αφορούν ΜΟΝΟ αν κάποιος είναι γιατρός</label>
                         <div class="form-check">
-
-                            <div>
                                 <input class="form-check-input" type="radio" id="isDoctorTrue" name="isDoctor" value="true" onchange="toggleDocSpecialty()">
-
                                 <label class="form-check-label" for="isDoctorTrue">Γιατρός</label>
-                            </div>
                         </div>
-
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="isDoctorFalse" name="isDoctor" value="false" onchange="toggleDocSpecialty()">
+                            <label class="form-check-label" for="isDoctorFalse">Όχι Γιατρός</label>
+                        </div>
                         <div class="form-group mb-3">
                             <select class="form-select" aria-label="Default select example" name="doc_specialty" id="doc_specialty" disabled>
                                 <option selected value="">Επιλέξτε Ειδικότητα</option>
                                 <option value="ΠΑΘΟΛΟΓΟΣ">ΠΑΘΟΛΟΓΟΣ</option>
                                 <option value="ΟΡΘΟΠΕΔΙΚΟΣ">ΟΡΘΟΠΕΔΙΚΟΣ</option>
-                                <option value="ΔΕΡΜΑΤΟΛΟΓΟΣ">ΔΕΡΜΑΤΟΛΟΓΟΣ</option>
+                                <option value="ΟΦΘΑΛΜΙΑΤΡΟΣ">ΟΦΘΑΛΜΙΑΤΡΟΣ</option>
+                                <option value="ΟΔΟΝΤΙΑΤΡΟΣ">ΟΔΟΝΤΙΑΤΡΟΣ</option>
                                 <option value="ΩΡΛ">ΩΡΛ</option>
                                 <option value="ΧΕΙΡΟΥΡΓΟΣ">ΧΕΙΡΟΥΡΓΟΣ</option>
-                                <option value="ΟΔΟΝΤΙΑΤΡΟΣ">ΟΔΟΝΤΙΑΤΡΟΣ</option>
-                                <option value="ΟΦΘΑΛΜΙΑΤΡΟΣ">ΟΦΘΑΛΜΙΑΤΡΟΣ</option>
+                                <option value="ΚΑΡΔΙΟΛΟΓΟΣ">ΚΑΡΔΙΟΛΟΓΟΣ</option>
                             </select>
                         </div>
                     </div>

@@ -72,6 +72,10 @@ public class AuthController {
 
         // Set the status based on whether the user is a doctor or not
         String status = isDoctor ? "ΕΚΚΡΕΜΕΙ" : "ΕΝΕΡΓΟΣ";
+        if (user.getDoc_specialty()==null){
+            user.setIsDoctor(false);
+        }
+
         user.setStatus(status);
 
         //save the user

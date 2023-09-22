@@ -1,5 +1,6 @@
 package com.example.registrationlogindemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Appointment {
     @Column(name = "status", columnDefinition = "varchar(20) default 'ΕΚΚΡΕΜΕΙ'")
     private String status;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
     private Doctor doctor;
 

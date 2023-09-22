@@ -6,6 +6,7 @@ import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.repository.AppointmentRepository;
 import com.example.registrationlogindemo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -123,9 +126,12 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/appointments/search")
-    public String searchAppointmentsByDate(@RequestParam("searchDate") String searchDateStr,
+    public String searchAppointmentsByDate(@RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate,
                                            Model model,
-                                           @AuthenticationPrincipal UserDetails userDetails) {
+                                           @AuthenticationPrincipal UserDetails userDetails) throws ParseException {
+        // Convert LocalDate to java.util.Date
+       // Date utilDate = Date.from(searchDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
         // Check if the user is a doctor
         if (userDetails == null) {
             return "redirect:/login";
@@ -142,15 +148,18 @@ public class DoctorController {
         String specialty = doctor.getSpecialty();
 
         // Convert the searchDateStr to a java.util.Date
-        Date searchDate = null;
+        /*Date searchDate = null;
         try {
             searchDate = new SimpleDateFormat("yyyy-MM-dd").parse(searchDateStr);
         } catch (ParseException e) {
             // Handle the parsing error, e.g., show an error message to the user
-        }
+        }*/
 
         // Retrieve the appointments for the entered date and specialty
-        List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
+        //List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
+
+        List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-01"), specialty);
+
 
         model.addAttribute("appointmentDetails", appointmentDetails);
         model.addAttribute("doctor", doctor);

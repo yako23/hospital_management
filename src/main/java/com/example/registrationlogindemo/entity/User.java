@@ -1,5 +1,7 @@
 package com.example.registrationlogindemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +34,7 @@ public class User
     @Column(nullable = false, unique = true)
     private String amka;
 
-    @Column(nullable=false, unique=true)
+    @Column(nullable=false)  //, unique=true
     private String email;
 
     @Column(nullable=false)
@@ -54,6 +56,8 @@ public class User
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
     private List<Role> roles = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Appointment> appointments;
 }

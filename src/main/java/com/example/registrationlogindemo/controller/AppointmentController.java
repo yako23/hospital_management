@@ -1,6 +1,7 @@
 package com.example.registrationlogindemo.controller;
 
 import com.example.registrationlogindemo.dto.AppointmentDto;
+import com.example.registrationlogindemo.dto.DoctorDto;
 import com.example.registrationlogindemo.dto.UserDto;
 import com.example.registrationlogindemo.entity.Appointment;
 import com.example.registrationlogindemo.entity.Doctor;
@@ -20,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class AppointmentController {
@@ -70,8 +72,6 @@ public class AppointmentController {
 
         // Create an Appointment entity from the DTO
         Appointment appointment = new Appointment();
-        //appointment.setUserId(userId);
-        //appointment.setDoctor_id(doctorId);
         appointment.setDoc_specialty(appointmentDto.getDocSpecialty());
         appointment.setApp_date(appointmentDto.getAppDate());
         appointment.setReason(appointmentDto.getReason());
@@ -91,9 +91,19 @@ public class AppointmentController {
 
     @GetMapping("/appointments/getDoctorsBySpecialty")
     @ResponseBody
-    public List<Doctor> getDoctorsBySpecialty(@RequestParam String specialty) {
+    public List<DoctorDto> getDoctorsBySpecialty(@RequestParam String specialty) {
         List<Doctor> doctors = doctorService.getDoctorsBySpecialty(specialty);
-        return doctors;
+
+        List<DoctorDto> doctorDTOs = doctors.stream().map(doctor -> {
+            DoctorDto dto = new DoctorDto();
+            dto.setId(doctor.getId());
+            dto.setSpecialty(doctor.getSpecialty());
+            dto.setFirstName(doctor.getUser().getFirstName());
+            dto.setLastName(doctor.getUser().getLastName());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return doctorDTOs;
     }
 
 

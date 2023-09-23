@@ -49,20 +49,20 @@
 <div class="container"><br><br>
   <div class="row">
     <div class="col-md-12">
-      <h2 class="text-center">Diagnoses by Doctor</h2>
-
+      <h2 class="text-center">Οι Διαγνώσεις μου</h2>
+<br>
       <!-- Display the Doctor's ID -->
-      <p>Doctor ID: <span th:text="${doctorId}"></span></p>
+      <p>ID Ιατρού: <span th:text="${doctorId}"></span></p>
       <table class="table">
         <thead>
         <tr>
           <th>ID</th>
-          <th>Date</th>
-          <th>Patient</th>
-          <th>Result</th>
-          <th>Treatment</th>
-          <th>Medicine</th>
-          <th>File</th>
+          <th>Ημερ/νία</th>
+          <th>Ασθενής</th>
+          <th>Διάγνωση</th>
+          <th>Θεραπεία</th>
+          <th>Φάρμακο</th>
+          <th>Αρχείο</th>
         </tr>
         </thead>
         <tbody>
@@ -77,9 +77,8 @@
           <td>
             <!-- Check if a file is uploaded for this diagnosis -->
             <div th:if="${diagnosis.fileUrl != null}">
-              <a th:href="${diagnosis.getPhotosImagePath()}" target="_blank" class="btn btn-primary">Open File</a>
+              <a th:href="${diagnosis.getPhotosImagePath()}" target="_blank" class="btn btn-primary">Άνοιγμα Αρχείου</a>
               <br>
-              <!--<img th:src="${diagnosis.getFileUrl()}" alt="Diagnosis Image"/>-->
             </div>
           </td>
         </tr>

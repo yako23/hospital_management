@@ -40,7 +40,7 @@
   </div>
 </nav>
 <br/><br><br>
-<h1>Search History</h1>
+<h1>Αναζήτηση Ιστορικού Ασθενή</h1>
 
 <form th:action="@{/doctor/search-history}" method="get">
   <input type="hidden" id="specialty" name="specialty" th:value="${doctorSpecialty}" />
@@ -49,7 +49,7 @@
     <label for="amka">AMKA:</label>
     <input type="text" id="amka" name="amka" />
   </div><br><br>
-  <button type="submit">Search</button>
+  <button type="submit">Αναζήτηση</button>
 </form>
 <br><br>
 <div th:if="${param.logout}">
@@ -60,13 +60,12 @@
 <table class="table table-bordered">
   <thead>
   <tr>
-    <th>Appointment ID</th>
-    <th>Date</th>
-    <th>Patient Name</th>
-    <th>Diagnosis Result</th>
-    <th>Treatment</th>
-    <th>Medicine</th>
-    <!-- Add more table headers as needed -->
+    <th>Ραντεβού Νο</th>
+    <th>Ημερ/νία</th>
+    <th>Όνομα Ασθενή</th>
+    <th>Διάγνωση</th>
+    <th>Θεραπεία</th>
+    <th>Φάρμακα</th>
   </tr>
   </thead>
   <tbody>
@@ -80,10 +79,6 @@
     <td th:text="${appointment.diagnosis.treatment}"></td>
     <td th:text="${appointment.diagnosis.medicine.name}"></td>
   </tr>
-  <!-- Add a conditional check to display a message if no results are found -->
-  <!--<tr th:if="${appointments.isEmpty()}">
-    <td colspan="6">No results found for the entered AMKA.</td>
-  </tr>-->
   </tbody>
 </table>
 </body>

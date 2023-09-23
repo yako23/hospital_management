@@ -45,19 +45,19 @@
 <br/><br>
 <div class="container">
   <br><br>
-  <h2 class="text-center">Pending Users</h2>
+  <h2 class="text-center">Εκκρεμείς Χρήστες</h2>
   <table class="table">
     <thead>
     <tr>
       <th>ID</th>
-      <th>Last Name</th>
-      <th>First Name</th>
+      <th>Επώνυμο</th>
+      <th>Όνομα</th>
       <th>AMKA</th>
       <th>Email</th>
-      <th>Specialty</th>
-      <th>Phone Number</th>
-      <th>Status</th>
-      <th>Action</th>
+      <th>Ειδικότητα</th>
+      <th>Τηλέφωνο</th>
+      <th>Κατάσταση</th>
+      <th>Ενέργειες</th>
     </tr>
     </thead>
     <tbody>
@@ -74,7 +74,7 @@
       <td>
         <!-- Check if the user's status is "ΕΚΚΡΕΜΕΙ" and display a button to change the status -->
         <div th:if="${user.status == 'ΕΚΚΡΕΜΕΙ'}">
-          <button class="btn btn-success" th:data-email="${user.email}" onclick="changeStatus(this)">Change Status</button>
+          <button class="btn btn-success" th:data-email="${user.email}" onclick="changeStatus(this)">Αποδοχή</button>
         </div>
 
 

@@ -54,24 +54,25 @@
 <div class="container"><br><br>
   <div class="row">
     <div class="col-md-12">
-      <h2 class="text-center">Your Appointments</h2>
+      <h2 class="text-center">Τα Ραντεβού μου</h2>
       <!-- Add the userId here -->
       <div class="form-group mb-3">
-        <label for="userId">Doctor ID:</label>
+        <label for="userId">ID Ιατρού:</label>
         <span id="userId" th:text="${userId}"></span>
       </div>
       <!-- Display the doctor's specialty -->
       <div class="form-group mb-3">
-        <label for="docSpecialty">Doctor Specialty:</label>
+        <label for="docSpecialty">Ειδικότητα:</label>
         <span id="docSpecialty" th:text="${doctor.user.doc_specialty}"></span>
       </div>
       <!-- Add the date input and search button -->
       <form th:action="@{/doctor/appointments/search}" method="get" class="form-inline">
         <div class="form-group mx-sm-3 mb-2">
-          <label for="searchDate" class="sr-only">Search Date:</label>
+          <label for="searchDate" class="sr-only">Αναζήτηση Ημερν/ίας:</label>
           <input type="date" class="form-control" id="searchDate" name="searchDate">
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <br>
+        <button type="submit" class="btn btn-primary mb-2">Αναζήτηση</button>
 
       </form>
     </div>
@@ -84,12 +85,12 @@
       <table class="table">
         <tr>
           <th style="color: darkblue;">A/A</th>
-          <th style="color: darkblue;">App Date</th>
-          <th style="color: darkblue;">Last Name</th>
-          <th style="color: darkblue;">First Name</th>
-          <th style="color: darkblue;">Reason</th>
-          <th style="color: darkblue;">Status</th>
-          <th>Actions</th>
+          <th style="color: darkblue;">Ημερ/νία</th>
+          <th style="color: darkblue;">Επώνυμο</th>
+          <th style="color: darkblue;">Όνομα</th>
+          <th style="color: darkblue;">Λόγος Επίσκεψης</th>
+          <th style="color: darkblue;">Κατάσταση</th>
+          <th>Ενέργειες</th>
         </tr>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
           <td th:text="${appointmentDetail[5]}"></td>
@@ -100,7 +101,7 @@
           <td th:text="${appointmentDetail[4]}"></td>
           <td>
           <a th:href="@{/diagnoses/by-appointment/{appointmentId}(appointmentId=${appointmentDetail[5]})}"
-             class="btn btn-primary">Diagnose</a>
+             class="btn btn-primary">Διάγνωση</a>
           </td>
         </tr>
       </table>

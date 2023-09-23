@@ -33,9 +33,6 @@
           <a class="nav-link" th:href="@{/doctors}">Αναζήτηση Γιατρών</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/contact}">Επικοινωνία</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" th:href="@{/logout}">Αποσύνδεση</a>
         </li>
       </ul>
@@ -50,17 +47,17 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="text-center">Diagnose Appointment</h2>
+      <h2 class="text-center">Διάγνωση Ραντεβού</h2>
 
       <div th:if="${param.logout}">
         <div class="alert alert-success">You have been logged out.</div>
       </div>
       <!-- Display appointment details -->
-      <p>Appointment ID: <span th:text="${appointment.id}"></span></p>
-      <p>Date: <span th:text="${appointment.app_date}"></span></p>
-      <p>Patient: <span th:text="${appointment.user.firstName} + ' ' + ${appointment.user.lastName}"></span></p>
+      <p>Ραντεβού Νο: <span th:text="${appointment.id}"></span></p>
+      <p>Ημερ/νία: <span th:text="${appointment.app_date}"></span></p>
+      <p>Ασθενής: <span th:text="${appointment.user.firstName} + ' ' + ${appointment.user.lastName}"></span></p>
 
-      <!-- Add your diagnosis form here -->
+
       <form method="post" th:action="@{/diagnoses/save}" th:object="${diagnosis}" enctype="multipart/form-data">
         <input type="hidden" name="appointment.id" th:value="${appointmentId}">
         <div class="form-group">
@@ -72,52 +69,23 @@
           <textarea class="form-control" id="treatment" name="treatment" rows="4"></textarea>
         </div>
         <div class="form-group">
-          <label for="medicine">Select Medicine:</label>
+          <label for="medicine">Επιλέξτε Φάρμακο:</label>
           <select class="form-control" id="medicine" name="medicine.id">
-            <option value="">Select a Medicine</option>
+            <option value="">Επιλέξτε Φάρμακο</option>
             <th:block th:each="medicine : ${medicines}">
               <option th:value="${medicine.id}" th:text="${medicine.name}"></option>
             </th:block>
           </select>
         </div>
-        <!-- Add image upload field -->
 
-         <!-- <input type="file" name="image" id="image" accept="image/png, image/jpeg" />-->
-          <!--<button class="btn btn-sm btn-outline-success float-right" type="submit">
-            Upload
-          </button>-->
-
-        <!--<div
-                th:if="${message != null}"
-                class="alert alert-secondary alert-dismissible fade show text-center message mt-3"
-                role="alert">
-          [[${message}]]
-          <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>-->
 
         <div class="form-group">
-          <label for="image">Upload Image:</label>
+          <label for="image">Ανέβασμα Αρχείου:</label>
           <input type="file" id="image" name="image" accept="image/png, image/jpeg">
         </div>
 <br><br>
-        <!-- File Upload Field for Doctor -->
-        <!--<form th:action="@{/diagnoses/uploadFile}" method="post" enctype="multipart/form-data">
-          <input type="file" name="file" accept=".pdf">
-          <input type="submit" value="Upload PDF">
-        </form>-->
 
-        <!-- <div class="form-group">
-           <label for="status">Change Status:</label>
-           <select class="form-control" id="status" name="appointment.status">
-             <option value="ΕΚΚΡΕΜΕΙ">ΕΚΚΡΕΜΕΙ</option>
-             <option value="ΟΛΟΚΛΗΡΩΜΕΝΟ">ΟΛΟΚΛΗΡΩΜΕΝΟ</option>
-           </select>
-         </div>-->
-        <!-- Add other diagnosis fields here -->
-        <!--<input type="hidden" th:field="*{appointment.id}" />-->
-        <button type="submit" class="btn btn-primary">Save Diagnosis</button>
+        <button type="submit" class="btn btn-primary">Αποθήκευση Διάγνωσης</button>
       </form>
     </div>
   </div>

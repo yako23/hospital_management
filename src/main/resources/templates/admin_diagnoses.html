@@ -46,20 +46,20 @@
     <div class="row">
         <div class="col-md-12">
             <br><br>
-            <h2 class="text-center">Diagnoses by Doctor</h2>
+            <h2 class="text-center">Διαγνώσεις Ιατρού</h2>
 
             <table class="table">
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Date</th>
-                    <th>Doctor</th>
-                    <th>Doctor Specialty</th>
-                    <th>Patient</th>
-                    <th>Result</th>
-                    <th>Treatment</th>
-                    <th>Medicine</th>
-                    <th>File</th>
+                    <th>Ημερ/νία</th>
+                    <th>Ιατρός</th>
+                    <th>Ειδικότητα Ιατρού</th>
+                    <th>Ασθενής</th>
+                    <th>Διάγνωση</th>
+                    <th>Θεραπεία</th>
+                    <th>Φάρμακο</th>
+                    <th>Αρχείο</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -76,7 +76,7 @@
                     <td>
                         <!-- Check if a file is uploaded for this diagnosis -->
                         <div th:if="${diagnosis.fileUrl != null}">
-                            <a th:href="${diagnosis.getPhotosImagePath()}" target="_blank" class="btn btn-primary">Open File</a>
+                            <a th:href="${diagnosis.getPhotosImagePath()}" target="_blank" class="btn btn-primary">Άνοιγμα Αρχείου</a>
                         </div>
                     </td>
                 </tr>

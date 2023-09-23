@@ -84,12 +84,10 @@
                 <td th:text="${user.isDoctor}"></td>
                 <td th:text="${user.doc_specialty}"></td>
                 <td th:text="${user.status}"></td>
-                <!--<div sec:authorize="hasAnyAuthority('ADMIN')">-->
                     <td><a class="btn btn-sm btn-primary"
                            th:href="@{/users/edit/{id}(id=${user.id})}">Επεξεργασία</a> <a
                             class="btn btn-sm btn-danger"
                             th:href="@{/users/{id}(id=${user.id})}">Διαγραφή</a></td>
-                <!--</div>-->
             </tr>
         </tbody>
     </table>

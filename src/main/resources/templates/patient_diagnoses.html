@@ -58,10 +58,10 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12"><br><br>
-      <h2 class="text-center">Diagnoses by Patient</h2>
+      <h2 class="text-center">Οι Διαγνώσεις μου</h2>
       <!-- Display the user's name -->
       <div class="form-group mb-3">
-        <label for="userName">Patient Name:</label>
+        <label for="userName">Ονομ/νυμο:</label>
         <div id="userName" th:text="${user.lastName + ' ' + user.firstName}"></div>
 
         <div th:if="${param.logout}">
@@ -70,12 +70,12 @@
       <table class="table">
         <thead>
         <tr>
-          <th style="color: darkblue;">Date</th>
-          <th style="color: darkblue;">Doctor</th>
-          <th style="color: darkblue;">Doctor's Specialty</th>
-          <th style="color: darkblue;">Result</th>
-          <th style="color: darkblue;">Treatment</th>
-          <th style="color: darkblue;">Medicine</th>
+          <th style="color: darkblue;">Ημερ/νία</th>
+          <th style="color: darkblue;">Ιατρός</th>
+          <th style="color: darkblue;">Ειδικότητα</th>
+          <th style="color: darkblue;">Διάγνωση</th>
+          <th style="color: darkblue;">Θεραπεία</th>
+          <th style="color: darkblue;">Φάρμακα</th>
         </tr>
         </thead>
         <tbody>

@@ -48,12 +48,12 @@
     <div class="col-md-6 offset-md-3">
       <div class="card">
         <div class="card-header"><br><br>
-          <h2 class="text-center">Doctor Search</h2>
+          <h2 class="text-center">Αναζήτηση Ιατρών</h2>
         </div>
         <div class="card-body">
           <form method="get" th:action="@{/doctors}">
             <div class="form-group">
-              <label for="specialty">Search by Specialty:</label>
+              <label for="specialty">Αναζήτηση ανά Ειδικότητα:</label>
               <select class="form-control" id="specialty" name="specialty">
                 <option value="" selected>All Specialties</option>
                 <option value="ΠΑΘΟΛΟΓΟΣ">ΠΑΘΟΛΟΓΟΣ</option>
@@ -65,24 +65,24 @@
                 <option value="ΚΑΡΔΙΟΛΟΓΟΣ">ΚΑΡΔΙΟΛΟΓΟΣ</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">Αναζήτηση</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-<br/>
+<br><br><br>
 <div class="container">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <h3>All Doctors</h3>
+      <h3>Όλοι οι Ιατροί</h3>
       <table class="table table-striped">
         <thead>
         <tr>
-          <th>Doctor ID</th>
-          <th>Name</th>
-          <th>Specialty</th>
+          <th>ID Ιατρού</th>
+          <th>Όνομα</th>
+          <th>Ειδικότητα</th>
         </tr>
         </thead>
         <tbody>

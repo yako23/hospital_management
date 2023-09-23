@@ -54,7 +54,7 @@
   <div class="row">
     <div class="col-md-12">
       <br><br>
-      <h2 class="text-center">Administrator Appointments</h2>
+      <h2 class="text-center">Ραντεβού-Διαχειριστής</h2>
     </div>
   </div>
 </div>
@@ -64,13 +64,13 @@
     <div class="col-md-12 center-table">
       <table class="table">
         <tr>
-          <th style="color: darkblue;">Doctor's Name</th>
-          <th style="color: darkblue;">Doctor's Specialty</th>
-          <th style="color: darkblue;">App Date</th>
-          <th style="color: darkblue;">Last Name</th>
-          <th style="color: darkblue;">First Name</th>
-          <th style="color: darkblue;">Reason</th>
-          <th style="color: darkblue;">Status</th>
+          <th style="color: darkblue;">Ιατρός</th>
+          <th style="color: darkblue;">Ειδικότητα</th>
+          <th style="color: darkblue;">Ημερ/νία</th>
+          <th style="color: darkblue;">Επώνυμο</th>
+          <th style="color: darkblue;">Όνομα</th>
+          <th style="color: darkblue;">Λόγος Επίσκεψης</th>
+          <th style="color: darkblue;">Κατάσταση</th>
           <th>Actions</th>
         </tr>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
@@ -83,7 +83,7 @@
           <td th:text="${appointmentDetail.status}"></td>
           <td>
             <a th:href="@{/admin/diagnoses/by-appointment/{appointmentId}(appointmentId=${appointmentDetail.id})}"
-               class="btn btn-primary">Diagnose</a>
+               class="btn btn-primary">Διάγνωση</a>
           </td>
         </tr>
       </table>

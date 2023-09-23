@@ -72,16 +72,15 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12"><br><br>
-      <h2 class="text-center">Your Appointments</h2>
+      <h2 class="text-center">Τα Ραντεβού μου</h2>
       <!-- Display the user's name -->
       <div class="form-group mb-3">
-        <label for="userName">Patient Name:</label>
+        <label for="userName">Ονομ/νυμο:</label>
         <div id="userName" th:text="${user.lastName + ' ' + user.firstName}"></div>
 
         <div th:if="${param.logout}">
           <div class="alert alert-success">You have been logged out.</div>
         </div>
-        <!--<span id="userName" th:text="${user.lastName + ' ' + user.firstName}"></span>-->
       </div>
     </div>
   </div>
@@ -92,13 +91,13 @@
     <div class="col-md-12 center-table">
       <table class="table">
         <tr>
-          <th style="color: darkblue;">Appointment ID</th>
-          <th style="color: darkblue;">Appointment Date</th>
-          <th style="color: darkblue;">Doctor's Specialty</th>
-          <th style="color: darkblue;">Doctor's Name</th>
-          <th style="color: darkblue;">Reason</th>
-          <th style="color: darkblue;">Status</th>
-          <th style="color: darkblue;">Actions</th>
+          <th style="color: darkblue;">Ραντεβού Νο</th>
+          <th style="color: darkblue;">Ημερ/νία</th>
+          <th style="color: darkblue;">Ειδικότητα Ιατρού</th>
+          <th style="color: darkblue;">Όνομα Ιατρού</th>
+          <th style="color: darkblue;">Λόγος Κράτησης</th>
+          <th style="color: darkblue;">Κατάσταση</th>
+          <th style="color: darkblue;">Ενέργειες</th>
 
         </tr>
         <tr th:each="appointment : ${appointments}">

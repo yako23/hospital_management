@@ -197,36 +197,5 @@
   document.getElementById("docSpecialty").addEventListener("change", loadDoctors);
 </script>
 
-
-<!--<script>
-  $(document).ready(function () {
-    // Listen to the change event of the docSpecialty dropdown
-    $("#docSpecialty").change(function () {
-      var docSpecialty = $(this).val();
-      console.log("Selected Specialty:", docSpecialty);
-
-      // Fetch doctors by specialty
-      $.get("/appointments/getDoctorsBySpecialty", { specialty: docSpecialty }, function (data) {
-        console.log("Data:", data);
-        var doctorIdDropdown = $("#doctorId");
-        doctorIdDropdown.empty();
-        doctorIdDropdown.append('<option value="" disabled selected>Επιλέξτε γιατρό</option>');
-
-        // Populate the doctorId select list with retrieved doctors
-        $.each(data, function (index, doctor) {
-          console.log("Doctor:", doctor);
-          doctorIdDropdown.append('<option value="' + doctor.id + '">' + doctor.user.firstName + ' ' + doctor.user.lastName + '</option>');
-        });
-      }).fail(function () {
-        var doctorIdDropdown = $("#doctorId");
-        doctorIdDropdown.empty();
-        doctorIdDropdown.append('<option value="" disabled selected>Επιλέξτε ειδικότητα πρώτα</option>');
-        console.log("Failed to fetch doctors.");
-      });
-    });
-  });
-</script>-->
-
-
 </body>
 </html>

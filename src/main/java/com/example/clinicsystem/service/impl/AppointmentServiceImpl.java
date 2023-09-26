@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -165,20 +167,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     public List<Appointment> searchAppointments(String amka, String specialty) {
-        // Implement the logic to search for appointments by specialty and AMKA
-        // Return the list of matching appointments
         return appointmentRepository.findByUserAmkaAndDoctorSpecialty(amka, specialty);
     }
 
     @Override
     public List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty) {
-        // Implement the logic to search for appointments by date and specialty
-        // You'll need to define a custom query method in your AppointmentRepository
-        // to retrieve the desired data.
-
         return appointmentRepository.findAppointmentsByDateAndSpecialty(searchDate, specialty);
     }
-
+    @Override
+    public Date parseDateString(String dateString) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.parse(dateString);
+    }
     @Override
     public List<Appointment> getAppointmentsByPatientEmail(String email) {
         return appointmentRepository.findByUserEmail(email);

@@ -75,9 +75,15 @@
     <td th:text="${appointment.app_date}"></td>
     <td th:text="${appointment.user.firstName + ' ' + appointment.user.lastName}"></td>
     <!-- Access diagnosis data for the current appointment -->
-    <td th:text="${appointment.diagnosis.result}"></td>
-    <td th:text="${appointment.diagnosis.treatment}"></td>
-    <td th:text="${appointment.diagnosis.medicine.name}"></td>
+    <td>
+      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.result}"></span>
+    </td>
+    <td>
+      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.treatment}"></span>
+    </td>
+    <td>
+      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.medicine.name}"></span>
+    </td>
   </tr>
   </tbody>
 </table>

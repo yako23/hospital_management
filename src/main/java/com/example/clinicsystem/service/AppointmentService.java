@@ -4,6 +4,8 @@ import com.example.clinicsystem.dto.AppointmentDto;
 import com.example.clinicsystem.entity.Appointment;
 import com.example.clinicsystem.entity.Doctor;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +33,8 @@ public interface AppointmentService {
 
     List<Appointment> searchAppointments(String amka, String specialty);
     List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty);
+
+    Date parseDateString(String dateString) throws ParseException;
 
     List<Appointment> getAppointmentsByPatientEmail(String email);
 

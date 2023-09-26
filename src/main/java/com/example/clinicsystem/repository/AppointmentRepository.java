@@ -26,7 +26,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query("SELECT a.app_date, u.firstName, u.lastName, a.reason, a.status, a.id " +
             "FROM Appointment a " +
             "JOIN a.user u " +
-            "WHERE a.app_date = :searchDate " +
+            "WHERE DATE(a.app_date) = :searchDate " +
             "AND u.doc_specialty = :specialty")
     List<Object[]> findAppointmentsByDateAndSpecialty(@Param("searchDate") Date searchDate,
                                                       @Param("specialty") String specialty);

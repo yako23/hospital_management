@@ -69,7 +69,7 @@
       <form th:action="@{/doctor/appointments/search}" method="get" class="form-inline">
         <div class="form-group mx-sm-3 mb-2">
           <label for="searchDate" class="sr-only">Αναζήτηση Ημερν/ίας:</label>
-          <input type="date" class="form-control" id="searchDate" name="searchDate">
+          <input type="date" class="form-control" id="searchDate" name="searchDate" pattern="\d{4}-\d{2}-\d{2}">
         </div>
         <br>
         <button type="submit" class="btn btn-primary mb-2">Αναζήτηση</button>
@@ -90,7 +90,7 @@
           <th style="color: darkblue;">Όνομα</th>
           <th style="color: darkblue;">Λόγος Επίσκεψης</th>
           <th style="color: darkblue;">Κατάσταση</th>
-          <th>Ενέργειες</th>
+          <th style="color: darkblue;">Ενέργειες</th>
         </tr>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
           <td th:text="${appointmentDetail[5]}"></td>

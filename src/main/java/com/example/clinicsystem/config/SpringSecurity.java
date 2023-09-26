@@ -50,9 +50,11 @@ public class SpringSecurity {
 
                     try {
                         authorize.requestMatchers("/register/**", "/index", "/login", "/custom-403", "/doctors").permitAll()
-                                .requestMatchers("/users", "/users/**", "/users/edit/**", "/delete/**","/admin/diagnoses").hasAuthority("ADMIN")
-                                .requestMatchers("/booking_form", "/booking_form/**", "/appointment/**", "/doctor/appointments", "/diagnoses/by-doctor", "/diagnoses/by-appointment/{appointmentId}").hasAnyAuthority("ADMIN", "PATIENT")
-                                .requestMatchers("/doctor/appointments","/diagnoses/by-doctor","/diagnoses/by-appointment/{appointmentId}").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/users", "/users/**", "/users/edit/**", "/delete/**","/admin/diagnoses","/admin_appointments","/pending-users","/admin/diagnoses/by-appointment/{appointmentId}","/admin/diagnoses/save","/welcome").hasAuthority("ADMIN")
+                                .requestMatchers("/booking_form", "/booking_form/**", "/appointment/**").hasAnyAuthority("ADMIN", "PATIENT")
+                                .requestMatchers("/doctors","/getDoctorsBySpecialty").hasAnyAuthority("ADMIN","DOCTOR")
+                                .requestMatchers("/welcome/user").hasAuthority("PATIENT")
+                                .requestMatchers("/welcome/doctor","/doctor/appointments","/doctor/search-history","/doctor/appointments/search","/diagnoses/save","/diagnoses/by-doctor","/diagnoses/by-appointment/{appointmentId}").hasAuthority("DOCTOR")
                                 .anyRequest().authenticated()
                                 .and()
                                 .exceptionHandling((exceptionHandling) ->

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -113,18 +114,13 @@ public class DoctorController {
 
         model.addAttribute("doctorSpecialty", specialty);
 
-        // Retrieve the appointments based on specialty and AMKA
-        /*List<Appointment> appointments = appointmentService.searchAppointments(amka, specialty);
 
-        // Pass the search results to the template
-        model.addAttribute("appointments", appointments);
-        model.addAttribute("doctor", doctor);*/
 
         return "search_patient_history";
     }
 
     @GetMapping("/doctor/appointments/search")
-    public String searchAppointmentsByDate(@RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date searchDate,
+    public String searchAppointmentsByDate(@RequestParam("searchDate") String searchDateStr,
                                            Model model,
                                            @AuthenticationPrincipal UserDetails userDetails) throws ParseException {
         // Convert LocalDate to java.util.Date
@@ -144,19 +140,17 @@ public class DoctorController {
 
         // Get the specialty of the doctor
         String specialty = doctor.getSpecialty();
+        /*// Parse the input date string into a Date object
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date searchDate = dateFormat.parse(searchDateStr);*/
 
-        // Convert the searchDateStr to a java.util.Date
-        /*Date searchDate = null;
-        try {
-            searchDate = new SimpleDateFormat("yyyy-MM-dd").parse(searchDateStr);
-        } catch (ParseException e) {
-            // Handle the parsing error, e.g., show an error message to the user
-        }*/
+        // Parse the input date string into a Date object using the service method
+        Date searchDate = appointmentService.parseDateString(searchDateStr);
 
         // Retrieve the appointments for the entered date and specialty
         //List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
 
-        List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-01"), specialty);
+        List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
 
 
         model.addAttribute("appointmentDetails", appointmentDetails);

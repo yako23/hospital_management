@@ -3,6 +3,7 @@ package com.example.clinicsystem.service;
 import com.example.clinicsystem.entity.Doctor;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DoctorService {
@@ -17,5 +18,6 @@ public interface DoctorService {
     List<Object[]> getAppointmentDetailsByDoctorId(Long id);
 
     Doctor findByEmail(String email);
+
 
 }

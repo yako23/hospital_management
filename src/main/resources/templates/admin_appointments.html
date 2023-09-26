@@ -71,7 +71,7 @@
           <th style="color: darkblue;">Όνομα</th>
           <th style="color: darkblue;">Λόγος Επίσκεψης</th>
           <th style="color: darkblue;">Κατάσταση</th>
-          <th>Actions</th>
+          <th style="color: darkblue;">Actions</th>
         </tr>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
           <td th:text="${appointmentDetail.doctor.user.firstName + ' ' + appointmentDetail.doctor.user.lastName}"></td>

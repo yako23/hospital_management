@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,10 +23,12 @@ public class AuthController {
 
     private UserService userService;
     private DoctorRepository doctorRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService, DoctorRepository doctorRepository) {
+    public AuthController(UserService userService, DoctorRepository doctorRepository, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.doctorRepository = doctorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/index")
@@ -151,6 +154,63 @@ public class AuthController {
         //session.setAttribute("msg","Ο χρήστης διαγράφτηκε επιτυχώς!");
         return "redirect:/users";
     }
+
+    @GetMapping("/profile/edit")
+    public String editProfileForm(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        User user = userService.findByEmail(email);
+
+        if (user != null) {
+            // Create a UserDto and populate it with the user's current data
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setEmail(user.getEmail());
+            userDto.setAmka(user.getAmka());
+            userDto.setPhNo(user.getPhNo());
+
+            model.addAttribute("user", userDto);
+            return "update-user";
+        } else {
+            // Handle the case where the user is not found
+            return "redirect:/custom-403"; // or any other appropriate action
+        }
+    }
+
+    @PostMapping("/profile/edit")
+    public String editProfile(@ModelAttribute("user") UserDto userDto) {
+        // Retrieve the user's current data from the database using email
+        String email = userDto.getEmail();
+        User existingUser = userService.findByEmail(email);
+
+        if (existingUser != null) {
+            // Update the fields of the existing user object with data from UserDto
+            existingUser.setFirstName(userDto.getFirstName());
+            existingUser.setLastName(userDto.getLastName());
+            existingUser.setAmka(userDto.getAmka());
+            existingUser.setPhNo(userDto.getPhNo());
+
+            // Encrypt and update the password (if needed)
+            // For password encryption, use the PasswordEncoder bean
+            if (!userDto.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+                existingUser.setPassword(encodedPassword);
+            }
+
+            // Save the updated user object
+            userService.editUser(existingUser);
+
+            // Redirect to the profile page or any other appropriate page
+            return "redirect:/user-update";
+        } else {
+            // Handle the case where the user is not found
+            return "redirect:/custom-403"; // or any other appropriate action
+        }
+    }
+
+
+
 
     @GetMapping("/403")
     public String error403(){

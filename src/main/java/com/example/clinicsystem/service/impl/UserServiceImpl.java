@@ -98,6 +98,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void updateUserStatus(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateUser(User updatedUser) {
+        userRepository.save(updatedUser);
+    }
+
+    @Override
+    public Long getUserIdByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user.getId();
+        }
+        return null; // Return null if the user is not found by email
+    }
+
+    @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map((user) -> convertEntityToDto(user))

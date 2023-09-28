@@ -8,6 +8,7 @@ import com.example.clinicsystem.repository.AppointmentRepository;
 import com.example.clinicsystem.repository.DoctorRepository;
 import com.example.clinicsystem.repository.UserRepository;
 import com.example.clinicsystem.service.*;
+import jakarta.transaction.Transactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,6 +64,7 @@ public class AdminController {
 
     @PostMapping("/changeUserStatus")
     @ResponseBody
+    @Transactional
     public Map<String, Object> changeUserStatus(@RequestParam("email") String email) {
         Map<String, Object> response = new HashMap<>();
 
@@ -78,7 +80,8 @@ public class AdminController {
                // user.setStatus("ΕΝΕΡΓΟΣ");
 
                 // Save the updated user
-                userService.saveUser(user);
+               // userService.saveUser(user);
+                userService.updateUserStatus(user);
 
                 response.put("success", true);
             } else {

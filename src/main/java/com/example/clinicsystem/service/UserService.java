@@ -28,8 +28,9 @@ public interface UserService {
 
     Optional<User> findById(Long userId);
 
-    //void changeUserStatus(Long userId, String newStatus);
+    void updateUserStatus(User user);
 
-    //void updateStatus(Long userId, String newStatus);
+    void updateUser(User updatedUser);
 
+    Long getUserIdByEmail(String username);
 }

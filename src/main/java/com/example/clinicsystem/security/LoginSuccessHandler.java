@@ -40,6 +40,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (user != null && user.getId() != null) {
             Long userId = user.getId();
 
+        // Check if the user's status is "ΕΚΚΡΕΜΕΙ" and redirect accordingly
+        if ("ΕΚΚΡΕΜΕΙ".equals(user.getStatus())) {
+           response.sendRedirect("/403");
+           return;
+        }
+
         // Redirect the user based on their role
         if (roles.contains("ADMIN")) {
             response.sendRedirect("/welcome");

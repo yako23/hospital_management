@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class AuthController {
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                @RequestParam("isDoctor") Boolean isDoctor,
                                BindingResult result,
-                               Model model){
+                               Model model,RedirectAttributes redirectAttributes){
         User existing = userService.findByEmail(userDto.getEmail());
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
@@ -94,7 +95,7 @@ public class AuthController {
             // Save the doctor entity
             doctorRepository.save(doctor);
         }
-
+        redirectAttributes.addFlashAttribute("successMessage", "Η εγγραφή σας ολοκληρώθηκε επιτυχώς!");
         model.addAttribute("success", true);
         return "redirect:/register?success";
     }
@@ -173,43 +174,31 @@ public class AuthController {
             model.addAttribute("user", userDto);
             return "update-user";
         } else {
-            // Handle the case where the user is not found
-            return "redirect:/custom-403"; // or any other appropriate action
+            return "redirect:/custom-403";
         }
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile(@ModelAttribute("user") UserDto userDto) {
-        // Retrieve the user's current data from the database using email
+    public String editProfile(@ModelAttribute("user") UserDto userDto, RedirectAttributes redirectAttributes) {
+
         String email = userDto.getEmail();
         User existingUser = userService.findByEmail(email);
 
         if (existingUser != null) {
-            // Update the fields of the existing user object with data from UserDto
             existingUser.setFirstName(userDto.getFirstName());
             existingUser.setLastName(userDto.getLastName());
             existingUser.setAmka(userDto.getAmka());
             existingUser.setPhNo(userDto.getPhNo());
 
-            // Encrypt and update the password (if needed)
-            // For password encryption, use the PasswordEncoder bean
-            if (!userDto.getPassword().isEmpty()) {
-                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-                existingUser.setPassword(encodedPassword);
-            }
+            // Save the updated user
+            userService.updateUser(existingUser);
 
-            // Save the updated user object
-            userService.editUser(existingUser);
-
-            // Redirect to the profile page or any other appropriate page
-            return "redirect:/user-update";
-        } else {
-            // Handle the case where the user is not found
-            return "redirect:/custom-403"; // or any other appropriate action
+            // Add a success message to the redirect attributes
+            redirectAttributes.addFlashAttribute("successMessage", "Η αλλαγές σας αποθηκεύτηκαν επιτυχώς!");
         }
+            // Redirect to the profile edit page with a success message
+            return "redirect:/profile/edit?success";
     }
-
-
 
 
     @GetMapping("/403")

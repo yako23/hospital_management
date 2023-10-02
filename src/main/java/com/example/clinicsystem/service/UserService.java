@@ -33,4 +33,6 @@ public interface UserService {
     void updateUser(User updatedUser);
 
     Long getUserIdByEmail(String username);
+
+    User findByAmka(String amka);
 }

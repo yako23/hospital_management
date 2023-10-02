@@ -33,7 +33,7 @@ public class User
     @Column(nullable = false, unique = true)
     private String amka;
 
-    @Column(nullable=false)  //, unique=true
+    @Column(nullable=false, unique=true)
     private String email;
 
     @Column(nullable=false)

@@ -9,10 +9,17 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
   <style>
-    /* Center the table horizontally */
     .center-table {
       margin: 0 auto;
       float: none;
+    }
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
     }
   </style>
 </head>
@@ -62,7 +69,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 center-table">
-      <table class="table">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="table-success">
         <tr>
           <th style="color: darkblue;">Ιατρός</th>
           <th style="color: darkblue;">Ειδικότητα</th>
@@ -73,6 +81,7 @@
           <th style="color: darkblue;">Κατάσταση</th>
           <th style="color: darkblue;">Actions</th>
         </tr>
+        </thead>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
           <td th:text="${appointmentDetail.doctor.user.firstName + ' ' + appointmentDetail.doctor.user.lastName}"></td>
           <td th:text="${appointmentDetail.doc_specialty}"></td>
@@ -92,6 +101,9 @@
   <div th:if="${param.logout}">
     <div class="alert alert-success">You have been logged out.</div>
   </div>
+</div>
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
 </div>
 </body>
 </html>

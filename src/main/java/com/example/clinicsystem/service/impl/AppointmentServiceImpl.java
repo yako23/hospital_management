@@ -63,8 +63,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentDto> getAppointmentsByDoctorId(Long doctorId) {
-        /*List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
-        return convertToAppointmentDtoList(appointments);*/
         Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
         if (doctor != null) {
             String firstName = doctor.getUser().getFirstName();
@@ -92,38 +90,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findByUserId(userId);
     }
 
-    @Override
-    public Appointment createAppointment(Appointment appointment, Long doctorId, Long userId) {
-        return null;
-    }
-
-
-    /*@Override
-    @Transactional
-    public void saveAppointment(AppointmentDto appointmentDto) {
-        Appointment appointment = new Appointment();
-        appointment.setApp_date(appointmentDto.getAppDate());
-        appointment.setDoc_specialty(appointmentDto.getDocSpecialty());
-        appointment.setReason(appointmentDto.getReason());
-        // Set the selected doctor from the appointmentDto
-       // appointment.setDoctor(appointmentDto.getSelectedDoctor());
-
-        // Fetch the selected doctor from the DoctorRepository
-        Doctor selectedDoctor = doctorRepository.findById(appointmentDto.getDoctorId()).orElse(null);
-        appointment.setDoctor(selectedDoctor);
-        if (selectedDoctor != null) {
-            appointment.setDoctor_id(selectedDoctor.getId());
-        }
-        // Fetch the user (patient) from the UserRepository using the userId
-        User user = userRepository.findById(appointmentDto.getUserId()).orElse(null);
-        if (user != null) {
-            appointment.setUser(user);
-            appointment.setUserId(user.getId());
-        }
-
-        // Save the appointment
-        appointmentRepository.save(appointment);
-    }*/
 
     @Override
     @Transactional
@@ -135,16 +101,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDto> getAppointmentsByUserId(Long userId) {
         List<Appointment> appointments = appointmentRepository.findByUserId(userId);
         return convertToAppointmentDtoList(appointments);
-    }
-
-    @Override
-    public Long findDoctorIdByName(Doctor selectedDoctor) {
-        return null;
-    }
-
-    @Override
-    public List<AppointmentDto> getAppointmentsBySpecialty(String specialty) {
-        return null;
     }
 
 

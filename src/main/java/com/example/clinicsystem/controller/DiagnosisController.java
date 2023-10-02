@@ -75,7 +75,6 @@ public class DiagnosisController {
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 diagnosis.setFileUrl(fileName);
 
-                // Save the diagnosis
                 Diagnosis savedDiagnosis = diagnosisService.saveDiagnosis(diagnosis);
 
                 String uploadDir = "./diagnosis-photos/" + patient.getId();
@@ -97,11 +96,7 @@ public class DiagnosisController {
                 // Save the diagnosis
                 diagnosisService.saveDiagnosis(diagnosis);
             }
-
-
         }
-
-           // FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "redirect:/doctor/appointments";
     }
 
@@ -112,7 +107,6 @@ public class DiagnosisController {
         Doctor doctor = doctorService.findByUsername(email);
 
         if (doctor == null) {
-            // Handle the case where the doctor is not found
             return "custom-403";
         }
 
@@ -136,40 +130,10 @@ public class DiagnosisController {
         }
 
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
-        /*if (appointment == null || !appointment.getDoctor().getId().equals(doctor.getId())) {
-            // Handle the case where the appointment is not found or doesn't belong to the doctor
-            return "custom-403";
-        }*/
 
         model.addAttribute("medicines", medicineService.getAllMedicines());
         model.addAttribute("appointment", appointment);
         return "diagnose_appointment";
     }
 
-
-
-    /*@PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file,
-                             @RequestParam("diagnosisId") Long diagnosisId,
-                             RedirectAttributes redirectAttributes) {
-
-        // Handle file upload and storage here, generate a file URL
-        try {
-            String storagePath = "C:\\Users\\Yannis\\Desktop";
-            Path filePath = Paths.get(storagePath + uniqueFilename);
-            Files.write(filePath, file.getBytes());
-        } catch (IOException e) {
-            // Handle the exception, e.g., log it or return an error message
-        }
-
-        // Update the Diagnosis object with the file URL
-        Diagnosis diagnosis = diagnosisService.getDiagnosisById(diagnosisId);
-        diagnosis.setFileUrl(fileUrl);
-
-        // Save the updated Diagnosis object
-        diagnosisService.saveDiagnosis(diagnosis);
-
-        redirectAttributes.addFlashAttribute("message", "File uploaded successfully.");
-        return "redirect:/diagnoses";
-    }*/
 }

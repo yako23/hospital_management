@@ -53,7 +53,6 @@ public class AdminController {
 
     @GetMapping("/admin_appointments")
     public String viewAppointmentsForAdmin(Model model) {
-        // Replace this with your logic to fetch appointment details for all doctors
         List<Appointment> appointmentDetails = appointmentService.getAllAppointments();
 
         // Add the appointment details to the model
@@ -77,84 +76,24 @@ public class AdminController {
                 // Update the user's status to "ΕΝΕΡΓΟΣ" or toggle it if it's a boolean
                 String newStatus = user.getStatus().equals("ΕΚΚΡΕΜΕΙ") ? "ΕΝΕΡΓΟΣ" : "ΕΚΚΡΕΜΕΙ";
                 user.setStatus(newStatus);
-               // user.setStatus("ΕΝΕΡΓΟΣ");
 
                 // Save the updated user
-               // userService.saveUser(user);
                 userService.updateUserStatus(user);
 
                 response.put("success", true);
             } else {
                 // User not found
                 response.put("success", false);
-                response.put("message", "User not found");
+                response.put("message", "Ο χρήστης δεν βρέθηκε!");
             }
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Error changing user status");
+            response.put("message", "Σφάλμα κατά την αλλαγή Κατάστασης Χρήστη.");
         }
 
         return response;
     }
 
-
-   /* @PostMapping("/changeUserStatus")
-    @ResponseBody
-    public Map<String, Object> changeUserStatus(@RequestParam("userId") Long userId) {
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            // Attempt to find the user by ID
-            Optional<User> userOptional = userService.findById(userId);
-
-            if (userOptional.isPresent()) {
-                // User found
-                User user = userOptional.get();
-
-                // Update the user's status to "ΕΝΕΡΓΟΣ" or toggle it if it's a boolean
-                user.setStatus("ΕΝΕΡΓΟΣ");
-
-                // Save the updated user
-                userService.saveUser(user);
-
-                response.put("success", true);
-            } else {
-                // User not found
-                response.put("success", false);
-                response.put("message", "User not found");
-            }
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", "Error changing user status");
-        }
-
-        return response;
-    }*/
-
-
-
-    /*@PostMapping("/admin/change-status/{userId}")
-    public ResponseEntity<String> changeStatus(@PathVariable Long userId) {
-        try {
-
-            // Retrieve the pending user by ID
-            Optional<User> optionalUser = userService.findById(userId);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                // Check the current status and update it accordingly
-               *//* if ("ΕΚΚΡΕΜΕΙ".equals(user.getStatus())) {*//*
-                    user.setStatus("ΕΝΕΡΓΟΣ");
-                    userService.saveUser(user); // Save the updated user
-
-                    return ResponseEntity.ok("Status changed successfully");
-
-                }
-
-            return ResponseEntity.badRequest().body("Invalid user or status cannot be changed.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing status");
-        }
-    }*/
 
     @GetMapping("/pending-users")
     public String showpendingUsers(Model model) {
@@ -174,7 +113,7 @@ public class AdminController {
     public String viewAllDiagnoses(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         // Check if the user has the "ADMIN" authority
         if (!userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
-            // Handle the case where the user is not an administrator
+
             return "custom-403";
         }
 
@@ -193,8 +132,6 @@ public class AdminController {
         // Fetch the list of available doctors
         List<Doctor> doctors = doctorService.getAllDoctors();
         model.addAttribute("doctors", doctors);
-
-        // Add other necessary attributes to the model
 
         return "admin_diagnose_app";
     }
@@ -255,7 +192,7 @@ public class AdminController {
                     Path filePath = uploadPath.resolve(fileName);
                     Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    throw new IOException("Could not save the uploaded file: " + fileName);
+                    throw new IOException("Αδυναμία αποθήκευσης του αρχείου: " + fileName);
                 }
             } else {
                 // No file provided, set FileUrl to null
@@ -268,7 +205,4 @@ public class AdminController {
 
         return "redirect:/admin_appointments";
     }
-
-
-
 }

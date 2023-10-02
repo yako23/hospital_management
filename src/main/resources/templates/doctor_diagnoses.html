@@ -10,7 +10,16 @@
         crossorigin="anonymous">
   <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
   <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+  <style>
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" th:fragment="header">
@@ -51,10 +60,8 @@
     <div class="col-md-12">
       <h2 class="text-center">Οι Διαγνώσεις μου</h2>
 <br>
-      <!-- Display the Doctor's ID -->
-      <p>ID Ιατρού: <span th:text="${doctorId}"></span></p>
-      <table class="table">
-        <thead>
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="table-success">
         <tr>
           <th style="color: darkblue;">ID</th>
           <th style="color: darkblue;">Ημερ/νία</th>
@@ -90,7 +97,8 @@
     <div class="alert alert-success">You have been logged out.</div>
   </div>
 </div>
-
-<!--<div th:replace="fragments/footer :: footer"></div>-->
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
+</div>
 </body>
 </html>

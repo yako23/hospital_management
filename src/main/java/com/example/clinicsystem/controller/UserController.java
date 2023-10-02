@@ -47,7 +47,6 @@ public class UserController {
         model.addAttribute("appointments", patientAppointments);
         model.addAttribute("user", user);
 
-
         return "mybookings";
     }
 
@@ -56,21 +55,16 @@ public class UserController {
         // Check if the appointment exists
         Appointment appointment = appointmentService.getAppointmentById(id);
         if (appointment == null) {
-            // Handle the case where the appointment doesn't exist
-            // You can display an error message or redirect to a relevant page
-            return "redirect:/mybookings"; // Redirect back to the appointments page
+            return "redirect:/mybookings";
         }
 
         // Check if the appointment's status is "ΕΚΚΡΕΜΕΙ"
         if ("ΕΚΚΡΕΜΕΙ".equals(appointment.getStatus())) {
             // Delete the appointment
             appointmentService.deleteAppointment(id);
-            // Add a flash attribute for the success message
-            redirectAttributes.addFlashAttribute("successMessage", "Appointment cancelled successfully.");
-
+            redirectAttributes.addFlashAttribute("successMessage", "Το ραντεβού ακυρώθηκε επιτυχώς!");
         }
 
-        // Redirect back to the appointments page
         return "redirect:/mybookings";
     }
 
@@ -89,9 +83,7 @@ public class UserController {
         List<Diagnosis> patientDiagnoses = diagnosisService.getDiagnosesByPatientEmail(email);
 
         model.addAttribute("user", user);
-        // Add the patient's diagnoses to the model
         model.addAttribute("diagnoses", patientDiagnoses);
-        // You can add the patient's ID or other relevant information here if needed
 
         return "patient_diagnoses";
     }
@@ -113,6 +105,5 @@ public class UserController {
     public String firstAid(Model model) {
         return "first_aid";
     }
-
 
 }

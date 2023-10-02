@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit</title>
@@ -10,6 +9,16 @@
         rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+  <style>
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" th:fragment="header">
@@ -53,7 +62,6 @@
 
           <form th:action="@{/users/{id}(id=${user.id})}" method="post" th:object="${user}">
 
-
             <div class="form-group">
               <label>Εισάγετε Όνομα</label> <input type="text"
                                                     class="form-control" name="firstName" th:value="${user.firstName}">
@@ -80,8 +88,6 @@
                                                    class="form-control" name="phNo" th:value="${user.phNo}">
             </div>
 
-
-
             <button class="btn btn-primary btn-block">Αποθήκευση</button>
 
           </form>
@@ -92,6 +98,8 @@
   </div>
 
 </div>
-
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
+</div>
 </body>
 </html>

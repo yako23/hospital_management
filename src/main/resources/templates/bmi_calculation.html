@@ -55,6 +55,14 @@
             color: white;
             text-align: center;
         }
+         #footer {
+             position: fixed;
+             padding: 10px 10px 0px 10px;
+             bottom: 0;
+             width: 100%;
+             height: 40px;
+             text-align: center;
+         }
     </style>
 </head>
 <body>
@@ -183,12 +191,14 @@
         const resultDiv = document.getElementById("result");
         // Display result
         var messageBox = document.querySelector(".result-box");
-        messageBox.style.display = "block"; // Show the message box
+        messageBox.style.display = "block";
         resultDiv.innerHTML = `Ο ΔΜΣ σας είναι: ${bmi.toFixed(2)} (${category})`;
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<div id="footer">
+    Copyright © Koutras Ioannis-Prodromos
+</div>
 </body>
 </html>

@@ -18,18 +18,12 @@ public interface AppointmentService {
 
     List<Appointment> getAppointmentsByPatientId(Long userId);
 
-    Appointment createAppointment(Appointment appointment, Long doctorId, Long userId);
-
-    //void saveAppointment(AppointmentDto appointmentDto);
 
     void saveAppointment(Appointment appointment); // Add this method to save an Appointment entity
 
     Long findDoctorIdByName(String doctorFirstName, String doctorLastName);
     List<AppointmentDto> getAppointmentsByUserId(Long userId);
 
-    Long findDoctorIdByName(Doctor selectedDoctor);
-
-    List<AppointmentDto> getAppointmentsBySpecialty(String specialty);
 
     List<Appointment> searchAppointments(String amka, String specialty);
     List<Object[]> getAppointmentsByDateAndSpecialty(Date searchDate, String specialty);

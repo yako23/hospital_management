@@ -6,6 +6,16 @@
         rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+  <style>
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" th:fragment="header">
@@ -40,52 +50,72 @@
   </div>
 </nav>
 <br/><br><br>
-<h1>Αναζήτηση Ιστορικού Ασθενή</h1>
-
-<form th:action="@{/doctor/search-history}" method="get">
-  <input type="hidden" id="specialty" name="specialty" th:value="${doctorSpecialty}" />
-
-  <div>
-    <label for="amka">AMKA:</label>
-    <input type="text" id="amka" name="amka" />
-  </div><br><br>
-  <button type="submit">Αναζήτηση</button>
-</form>
-<br><br>
-<div th:if="${param.logout}">
-  <div class="alert alert-success">You have been logged out.</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h2 class="text-center">Αναζήτηση Ιστορικού Ασθενή</h2>
+    </div>
+  </div>
 </div>
 
-<!-- Display search results in a table -->
-<table class="table table-bordered">
-  <thead>
-  <tr>
-    <th>Ραντεβού Νο</th>
-    <th>Ημερ/νία</th>
-    <th>Όνομα Ασθενή</th>
-    <th>Διάγνωση</th>
-    <th>Θεραπεία</th>
-    <th>Φάρμακα</th>
-  </tr>
-  </thead>
-  <tbody>
-  <!-- Iterate over the list of appointments and display diagnosis data in rows -->
-  <tr th:each="appointment : ${appointments}">
-    <td th:text="${appointment.id}"></td>
-    <td th:text="${appointment.app_date}"></td>
-    <td th:text="${appointment.user.firstName + ' ' + appointment.user.lastName}"></td>
-    <!-- Access diagnosis data for the current appointment -->
-    <td>
-      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.result}"></span>
-    </td>
-    <td>
-      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.treatment}"></span>
-    </td>
-    <td>
-      <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.medicine.name}"></span>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+          <form th:action="@{/doctor/search-history}" method="get">
+            <div class="form-group"><br>
+              <label for="specialty">Εισάγετε ΑΜΚΑ για αναζήτηση:</label>
+            <input type="hidden" id="specialty" name="specialty" th:value="${doctorSpecialty}" />
+            <label for="amka" class="text-center">AMKA:</label>
+            <input type="text" id="amka" name="amka" />
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Αναζήτηση</button>
+            <br><br>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="table-success">
+        <tr>
+          <th>Ραντεβού Νο</th>
+          <th>Ημερ/νία</th>
+          <th>Όνομα Ασθενή</th>
+          <th>Διάγνωση</th>
+          <th>Θεραπεία</th>
+          <th>Φάρμακα</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over the list of appointments and display diagnosis data in rows -->
+        <tr th:each="appointment : ${appointments}">
+          <td th:text="${appointment.id}"></td>
+          <td th:text="${appointment.app_date}"></td>
+          <td th:text="${appointment.user.firstName + ' ' + appointment.user.lastName}"></td>
+          <!-- Access diagnosis data for the current appointment -->
+          <td>
+            <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.result}"></span>
+          </td>
+          <td>
+            <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.treatment}"></span>
+          </td>
+          <td>
+            <span th:if="${appointment.diagnosis != null}" th:text="${appointment.diagnosis.medicine.name}"></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
+</div>
 </body>
 </html>

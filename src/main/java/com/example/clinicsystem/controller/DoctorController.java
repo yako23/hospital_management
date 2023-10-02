@@ -67,7 +67,7 @@ public class DoctorController {
         String email = userDetails.getUsername();
         Doctor doctor = doctorService.findByUsername(email);
         if (doctor == null) {
-            model.addAttribute("errorMessage", "Doctor not found.");
+            model.addAttribute("errorMessage", "Δεν βρέθηκε γιατρός.");
             return "custom-403";
         }
 
@@ -89,7 +89,6 @@ public class DoctorController {
     public String searchAppointments(@RequestParam(name = "amka", required = false) String amka,
                                      Model model,
                                      @AuthenticationPrincipal UserDetails userDetails) {
-
 
         // Check if the user is a doctor
         if (userDetails == null) {
@@ -114,8 +113,6 @@ public class DoctorController {
 
         model.addAttribute("doctorSpecialty", specialty);
 
-
-
         return "search_patient_history";
     }
 
@@ -123,8 +120,6 @@ public class DoctorController {
     public String searchAppointmentsByDate(@RequestParam("searchDate") String searchDateStr,
                                            Model model,
                                            @AuthenticationPrincipal UserDetails userDetails) throws ParseException {
-        // Convert LocalDate to java.util.Date
-       // Date utilDate = Date.from(searchDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         // Check if the user is a doctor
         if (userDetails == null) {
@@ -140,18 +135,11 @@ public class DoctorController {
 
         // Get the specialty of the doctor
         String specialty = doctor.getSpecialty();
-        /*// Parse the input date string into a Date object
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date searchDate = dateFormat.parse(searchDateStr);*/
 
         // Parse the input date string into a Date object using the service method
         Date searchDate = appointmentService.parseDateString(searchDateStr);
 
-        // Retrieve the appointments for the entered date and specialty
-        //List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
-
         List<Object[]> appointmentDetails = appointmentService.getAppointmentsByDateAndSpecialty(searchDate, specialty);
-
 
         model.addAttribute("appointmentDetails", appointmentDetails);
         model.addAttribute("doctor", doctor);

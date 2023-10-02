@@ -12,7 +12,6 @@ public class CustomDateConverter implements Converter<String, Date> {
         try {
             return dateFormat.parse(source);
         } catch (ParseException e) {
-            // Handle parse exception, e.g., return null or throw an exception
             return null;
         }
     }

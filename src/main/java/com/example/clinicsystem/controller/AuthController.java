@@ -36,9 +36,9 @@ public class AuthController {
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        User user = userService.findByEmail(username); // Assuming email is used as the username
-        Long userId = user.getId(); // Here you have the ID of the currently logged-in user
-        // You can use this userId in any subsequent operations or pass it to other views as needed.
+        User user = userService.findByEmail(username);
+        Long userId = user.getId();
+
         model.addAttribute("userId", userId);
         return "index";
     }
@@ -48,7 +48,6 @@ public class AuthController {
         return "login";
     }
 
-    // handler method to handle user registration request
     @GetMapping("register")
     public String showRegistrationForm(Model model){
         UserDto user = new UserDto();
@@ -56,7 +55,6 @@ public class AuthController {
         return "register";
     }
 
-    // handler method to handle register user form submit request
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                @RequestParam("isDoctor") Boolean isDoctor,
@@ -64,7 +62,11 @@ public class AuthController {
                                Model model,RedirectAttributes redirectAttributes){
         User existing = userService.findByEmail(userDto.getEmail());
         if (existing != null) {
-            result.rejectValue("email", null, "There is already an account registered with that email");
+            result.rejectValue("email", null, "Υπάρχει ήδη λογαριασμός με αυτό το email");
+        }
+        User existingUserWithAMKA = userService.findByAmka(userDto.getAmka());
+        if (existingUserWithAMKA != null) {
+            result.rejectValue("amka", null, "Υπάρχει ήδη χρήστης με το ίδιο ΑΜΚΑ");
         }
         if (result.hasErrors()) {
             model.addAttribute("user", userDto);
@@ -147,12 +149,10 @@ public class AuthController {
         return "redirect:/users";
     }
 
-    //handler method to handle delete user request
     @GetMapping("/users/{id}")
     public String deleteUser(@PathVariable Long id)
     {
         userService.deleteUser(id);
-        //session.setAttribute("msg","Ο χρήστης διαγράφτηκε επιτυχώς!");
         return "redirect:/users";
     }
 
@@ -193,13 +193,10 @@ public class AuthController {
             // Save the updated user
             userService.updateUser(existingUser);
 
-            // Add a success message to the redirect attributes
             redirectAttributes.addFlashAttribute("successMessage", "Η αλλαγές σας αποθηκεύτηκαν επιτυχώς!");
         }
-            // Redirect to the profile edit page with a success message
             return "redirect:/profile/edit?success";
     }
-
 
     @GetMapping("/403")
     public String error403(){
@@ -212,13 +209,12 @@ public class AuthController {
     }
     @GetMapping("/welcome")
     public String welcome(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        // Get the user's role from UserDetails (e.g., authorities)
+        // Get the user's role from UserDetails
         String userRole = userDetails.getAuthorities().isEmpty() ? "" : userDetails.getAuthorities().iterator().next().getAuthority();
 
         String username = userDetails.getUsername();
         User user = userService.findByEmail(username);
 
-        // Assuming User has properties firstName and lastName
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         UserDto userInfo = new UserDto();
@@ -238,7 +234,6 @@ public class AuthController {
         String username = userDetails.getUsername();
         User user = userService.findByEmail(username);
 
-        // Assuming User has properties firstName and lastName
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         UserDto userInfo = new UserDto();
@@ -252,20 +247,18 @@ public class AuthController {
 
     @GetMapping("/welcome/doctor")
     public String welcomeDoctor(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        // Get the user's role from UserDetails (e.g., authorities)
+
         String userRole = userDetails.getAuthorities().isEmpty() ? "" : userDetails.getAuthorities().iterator().next().getAuthority();
 
         String username = userDetails.getUsername();
         User user = userService.findByEmail(username);
 
-        // Assuming User has properties firstName and lastName
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         UserDto userInfo = new UserDto();
         userInfo.setFirstName(firstName);
         userInfo.setLastName(lastName);
 
-        // Add the userRole and userFullName to the model
         model.addAttribute("userRole", userRole);
         model.addAttribute("userInfo", userInfo);
 

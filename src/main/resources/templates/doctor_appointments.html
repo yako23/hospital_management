@@ -10,10 +10,17 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
   <style>
-    /* Center the table horizontally */
     .center-table {
       margin: 0 auto;
       float: none;
+    }
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
     }
   </style>
 </head>
@@ -55,26 +62,6 @@
   <div class="row">
     <div class="col-md-12">
       <h2 class="text-center">Τα Ραντεβού μου</h2>
-      <!-- Add the userId here -->
-      <div class="form-group mb-3">
-        <label for="userId">ID Ιατρού:</label>
-        <span id="userId" th:text="${userId}"></span>
-      </div>
-      <!-- Display the doctor's specialty -->
-      <div class="form-group mb-3">
-        <label for="docSpecialty">Ειδικότητα:</label>
-        <span id="docSpecialty" th:text="${doctor.user.doc_specialty}"></span>
-      </div>
-      <!-- Add the date input and search button -->
-      <form th:action="@{/doctor/appointments/search}" method="get" class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-          <label for="searchDate" class="sr-only">Αναζήτηση Ημερν/ίας:</label>
-          <input type="date" class="form-control" id="searchDate" name="searchDate" pattern="\d{4}-\d{2}-\d{2}">
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary mb-2">Αναζήτηση</button>
-
-      </form>
     </div>
   </div>
 </div>
@@ -82,7 +69,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 center-table">
-      <table class="table">
+      <table class="table table-striped table-bordered table-hover">
+        <thead class="table-success">
         <tr>
           <th style="color: darkblue;">A/A</th>
           <th style="color: darkblue;">Ημερ/νία</th>
@@ -92,6 +80,7 @@
           <th style="color: darkblue;">Κατάσταση</th>
           <th style="color: darkblue;">Ενέργειες</th>
         </tr>
+        </thead>
         <tr th:each="appointmentDetail : ${appointmentDetails}">
           <td th:text="${appointmentDetail[5]}"></td>
           <td th:text="${appointmentDetail[0]}"></td>
@@ -110,6 +99,9 @@
   <div th:if="${param.logout}">
     <div class="alert alert-success">You have been logged out.</div>
   </div>
+</div>
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
 </div>
 </body>
 </html>

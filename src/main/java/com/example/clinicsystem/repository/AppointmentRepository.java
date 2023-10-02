@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     Appointment findById(Long id);
-    //List<Appointment> findBySelectedDoctorName(String email);
 
     List<Appointment> findByDoctorId(Long doctorId);
 

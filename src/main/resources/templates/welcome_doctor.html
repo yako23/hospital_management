@@ -16,6 +16,14 @@
       align-items: center;
       height: 80vh;
     }
+    #footer {
+      position: fixed;
+      padding: 10px 10px 0px 10px;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -50,11 +58,15 @@
     </div>
   </div>
 </nav>
-<br/><br/>
+<br/><br/><br><br>
 <div class="center">
   <img src="/images/doctor.jpg" alt="Welcome" width="400" height="400">
+  <br>
   <h2 th:text="'Καλωσήρθες και πάλι ' + ${userRole} + ' ' + ${userInfo.firstName + ' ' + userInfo.lastName}"></h2> <!-- Assuming ${userFullName} contains the full name (first name + last name) -->
 
+</div>
+<div id="footer">
+  Copyright © Koutras Ioannis-Prodromos
 </div>
 </body>
 </html>

@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // query to fetch users with status "ΕΚΚΡΕΜΕΙ"
     @Query("SELECT u FROM User u WHERE u.status = 'ΕΚΚΡΕΜΕΙ'")
     List<User> findPendingUsers();
+
+    User findByAmka(String amka);
 }

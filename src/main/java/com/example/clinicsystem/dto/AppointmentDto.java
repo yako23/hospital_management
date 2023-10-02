@@ -22,7 +22,6 @@ public class AppointmentDto {
     private Long doctorId;
     private Long userId;
     private String status;
-   // private Doctor selectedDoctor; // Store the selected doctor entity
 
 
     }

@@ -90,8 +90,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findPendingUsers();
     }
 
-
-
     @Override
     public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
@@ -115,6 +113,11 @@ public class UserServiceImpl implements UserService {
             return user.getId();
         }
         return null; // Return null if the user is not found by email
+    }
+
+    @Override
+    public User findByAmka(String amka) {
+        return userRepository.findByAmka(amka);
     }
 
     @Override
@@ -171,9 +174,8 @@ public class UserServiceImpl implements UserService {
             user.setStatus(newStatus);
             userRepository.save(user);
         } else {
-            throw new EntityNotFoundException("User not found with email: " + email);
+            throw new EntityNotFoundException("Δεν βρέθηκε χρήστης με email: " + email);
         }
     }
-
 
 }

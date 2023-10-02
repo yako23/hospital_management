@@ -53,7 +53,7 @@ public class SpringSecurity {
                                 .requestMatchers("/users", "/users/**", "/users/edit/**", "/delete/**","/admin/diagnoses","/admin_appointments","/pending-users","/admin/diagnoses/by-appointment/{appointmentId}","/admin/diagnoses/save","/welcome").hasAuthority("ADMIN")
                                 .requestMatchers("/booking_form", "/booking_form/**", "/appointment/**").hasAnyAuthority("ADMIN", "PATIENT")
                                 .requestMatchers("/doctors","/getDoctorsBySpecialty").hasAnyAuthority("ADMIN","DOCTOR")
-                                .requestMatchers("/welcome/user").hasAuthority("PATIENT")
+                                .requestMatchers("/welcome/user","/profile/edit","/delete-appointment/{id}","/diagnoses/by-patient","/bmi_calculation","/ideal_weight","/fat_calculation","/first_aid").hasAuthority("PATIENT")
                                 .requestMatchers("/welcome/doctor","/doctor/appointments","/doctor/search-history","/doctor/appointments/search","/diagnoses/save","/diagnoses/by-doctor","/diagnoses/by-appointment/{appointmentId}").hasAuthority("DOCTOR")
                                 .anyRequest().authenticated()
                                 .and()

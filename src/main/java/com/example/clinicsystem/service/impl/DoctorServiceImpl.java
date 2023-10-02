@@ -27,7 +27,6 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.findBySpecialty(specialty);
     }
 
-
     @Override
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
@@ -37,8 +36,6 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor getDoctorById(Long doctorId) {
         return doctorRepository.findById(doctorId).get();
     }
-
-
 
     @Override
     public List<Object[]> getAppointmentDetailsByDoctorId(Long doctorId) {
@@ -54,7 +51,7 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor findByUsername(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + email);
+            throw new UsernameNotFoundException("Δεν βρέθηκε χρήστης με username: " + email);
         }
         return doctorRepository.findByUser(user);
     }
